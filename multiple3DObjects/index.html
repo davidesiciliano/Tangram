@@ -2,25 +2,67 @@
 <html lang="en-US">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tangram</title>
-    <style type="text/css">
-      body {
-        margin: 0;
-        background-color: gray;
-      }
-      canvas {
-        display: block;
-        background-color: white;
-      }
-    </style>
-    <script type="text/javascript" src="utils.js"></script>
-    <script type="text/javascript" src="drawing.js"></script>
-     <script type="text/javascript" src="webgl-obj-loader.min.js"></script> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tangram</title>
+
+  <link rel="stylesheet" type="text/css" href="index.css">
 </head>
+
+
 <body>
-  <canvas id="c"></canvas>
+<div class="my-navbar">
+  <div class="my-navbar-section">
+    Theta<br/>
+    <input id="dirSlider1" type="range" min="0" max="1" step="0.01" value="0.5"><br/>
+    Phi<br/>
+    <input id="dirSlider2" type="range" min="0" max="1" step="0.01" value="0"><br/><br/>
+    <input id="dirLightEnable" type="checkbox" checked class="my-navbar-option">Directional<br/>
+  </div>
+  <div class="my-navbar-section">
+    Pos. x<br/>
+    <input id="pointSlider1" type="range" min="0" max="1" step="0.025" value="0.5"><br/>
+    Pos. y<br/>
+    <input id="pointSlider2" type="range" min="0" max="1" step="0.025" value="0.5"><br/><br/>
+    <input id="pointLightEnable" type="checkbox" class="my-navbar-option">Point<br/>
+  </div>
+  <div class="my-navbar-section">
+    Theta<br/>
+    <input id="spotSlider1" type="range" min="0" max="1" step="0.025" value="0"><br/>
+    Phi<br/>
+    <input id="spotSlider2" type="range" min="0" max="1" step="0.025" value="0"><br/><br/>
+    <input id="spotLightEnable" type="checkbox" class="my-navbar-option">Spot<br/>
+  </div>
+  <div class="my-navbar-section">
+    Cone In<br/>
+    <input id="spotSlider3" type="range" min="0" max="1" step="0.025" value="0.5"><br/>
+    Cone Out<br/>
+    <input id="spotSlider4" type="range" min="0" max="1" step="0.025" value="0.5"><br/>
+    Decay<br/>
+    <input id="spotSlider5" type="range" min="0" max="1" step="0.025" value="0.5"><br/>
+  </div>
+  <div class="my-navbar-section">
+    <h4>Light Colors</h4>
+    <input type="color" id="dirColor" value="#fdffff"> Directional<br/>
+    <input type="color" id="pointColor" value="#fdffff"> Point<br/>
+    <input type="color" id="spotColor" value="#fdffff"> Spot<br/>
+  </div>
+  <div class="my-navbar-section">
+    <h4 id="checkBtn" class="my-navbar-btn">Check</h4>
+    <h4 id="resetBtn" class="my-navbar-btn">Reset</h4>
+    <h4 id="surrenderBtn" class="my-navbar-btn">Surrender</h4>
+    <select id="stageSelect" class="my-navbar-btn">
+    </select>
+  </div>
+</div>
+
+<canvas id="c"></canvas>
 </body>
+
+<script type="text/javascript" src="utils.js"></script>
+<script type="text/javascript" src="variables.js"></script>
+<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="drawing.js"></script>
+<script type="text/javascript" src="webgl-obj-loader.min.js"></script>
 
 </html>
