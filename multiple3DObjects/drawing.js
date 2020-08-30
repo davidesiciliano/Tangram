@@ -117,20 +117,20 @@ var targets = [
         name: "swan",
         translations: [
             [5.0, 1.0, 0.0],
-            [7.0, 1.0, 0.0],
-            [11.0, 1.0, 0.0],
-            [5.0, -2.0, 0.0],
-            [6.0, -2.0, 0.0],
-            [7.0, -2.0, 0.0],
-            [8.0, -2.0, 0.0],
+            [5.0, 1.0, 0.0],
+            [4.59, 4.59, 0.0],
+            [5.59, 1.59, 0.0],
+            [4.59, 1.59, 0.0],
+            [3.59, 1.59, 0.0],
+            [5.0, 1.0, 0.0],
         ],
         rotation: [
+            [135.0],
+            [135.0],
+            [-135.0],
             [0.0],
             [0.0],
-            [0.0],
-            [0.0],
-            [0.0],
-            [0.0],
+            [90.0],
             [0.0]
         ],
         mirror: false
@@ -183,6 +183,7 @@ function main() {
   var materialDiffColorHandle = new Array();
   var vaos = new Array();
     
+  //NB, IN THE OBJ FILES THE THIRD COORD IS Y
   //first big triangle - positioned
   piecesWorldMatrix[0] = utils.MakeWorld( -0.95, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
   //middle triangle
@@ -199,12 +200,17 @@ function main() {
   piecesWorldMatrix[6] = utils.MakeWorld( 0.0, 1.2, -0.10, 180.0, 90.0, 0.0, 1.0);
   //tray - positioned
   piecesWorldMatrix[7] = utils.MakeWorld( 0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
-
+    
+  var translate = utils.MakeWorld(-5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+    for(i = 0; i < 8; i++) {
+        piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
+    }
   piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0]));
         
   for(i = 8; i < 15; i++) {
-      piecesWorldMatrix[i] = utils.MakeWorld(selectedTarget.translations[i-8][0], selectedTarget.translations[i-8][1], selectedTarget.translations[i-8][2], selectedTarget.rotation[i-8], 0.0, 0.0, 1.0);
+      piecesWorldMatrix[i] = utils.MakeWorld(selectedTarget.translations[i-8][0], selectedTarget.translations[i-8][1], selectedTarget.translations[i-8][2], 0.0, 0.0, selectedTarget.rotation[i-8], 1.0);
   }
+    
   var vertexPositionData = new Array();
   var normalData = new Array();
   var indexData = new Array();
@@ -304,8 +310,8 @@ function main() {
             gl.uniform3fv(lightColorHandle[i],  directionalLightColor);
             gl.uniform3fv(lightDirectionHandle[i],  directionalLight);
         }
-
-
+        
+        
       gl.bindVertexArray(vaos[i]);
       gl.drawElements(gl.TRIANGLES, indexData[i].length, gl.UNSIGNED_SHORT, 0 );
     }
