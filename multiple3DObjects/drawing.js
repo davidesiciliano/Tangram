@@ -1,3 +1,142 @@
+//TODO why doesn't it recognize this variable in another file???
+var pieces = [
+    {
+        //piece 1
+        name: "bigTriangle1",
+        vertices: [
+            2.0, 2.0, 0.0,
+            0.0, 4.0, 0.0,
+            0.0, 0.0, 0.0
+        ],
+        indices: [0, 1, 2],
+        normals: [
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0
+        ]
+    },
+    {
+        //piece 2
+        name: "middleTriangle",
+        vertices: [
+            0.0, 0.0, 0.0,
+            2.0, 0.0, 0.0,
+            2.0, 2.0, 0.0
+        ],
+        indices: [0, 1, 2],
+        normals: [
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0
+        ]
+    },
+    {
+        //piece 3 
+        name: "smallTriangle1",
+        vertices: [
+            0.0, 0.0, 0.0,
+            0.0, 2.0, 0.0,
+            -1.0, 1.0, 0.0
+        ],
+        indices: [0, 1, 2],
+        normals: [
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0
+        ]
+    },
+    {
+        //piece 4
+        name: "trapezoid",
+        vertices: [
+            0.0, 0.0, 0.0,
+            0.0, 2.0, 0.0,
+            -1.0, 3.0, 0.0,
+            -1.0, 1.0, 0.0
+        ],
+        indices: [0, 1, 2, 0, 2, 3],
+        normals: [
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0
+        ]
+    }, 
+    {
+        //piece 5
+        name: "square",
+        vertices: [
+            1.0, 0.0, 0.0,
+            0.0, 1.0, 0.0,
+            -1.0, 0.0, 0.0,
+            0.0, -1.0, 0.0
+        ],
+        indices: [0, 1, 2, 0, 2, 3],
+        normals: [
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0
+        ]
+    }, 
+    {
+        //piece 6
+        name: "smallTriangle2",
+        vertices: [
+            0.0, 0.0, 0.0,
+            2.0, 0.0, 0.0,
+            1.0, 1.0, 0.0
+        ],
+        indices: [0, 1, 2],
+        normals: [
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0
+        ]
+    },
+    {
+        //piece 7
+        name: "bigTriangle2",
+        vertices: [
+            0.0, 0.0, 0.0,
+            2.0, -2.0, 0.0,
+            4.0, 0.0, 0.0
+        ],
+        indices: [0, 1, 2],
+        normals: [
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0,
+            0.0, 0.0, -1.0
+        ]
+    }
+];
+
+
+var targets = [
+    {
+        name: "swan",
+        translations: [
+            [5.0, 1.0, 0.0],
+            [7.0, 1.0, 0.0],
+            [11.0, 1.0, 0.0],
+            [5.0, -2.0, 0.0],
+            [6.0, -2.0, 0.0],
+            [7.0, -2.0, 0.0],
+            [8.0, -2.0, 0.0],
+        ],
+        rotation: [
+            [0.0],
+            [0.0],
+            [0.0],
+            [0.0],
+            [0.0],
+            [0.0],
+            [0.0]
+        ],
+        mirror: false
+    }
+]
+
 var programs = new Array();
 var gl;
 var baseDir;
@@ -6,6 +145,10 @@ var shaderDir;
 var model = Array();
 
 var modelStr = Array();
+
+//then selectable by dropdown menu
+var idSelectedTarget = 0; 
+var selectedTarget = targets[idSelectedTarget];
 
 modelStr[0] = 'model/piece1.obj';
 modelStr[1] = 'model/piece2.obj';
@@ -16,8 +159,12 @@ modelStr[5] = 'model/piece6.obj';
 modelStr[6] = 'model/piece7.obj';
 modelStr[7] = 'model/tray.obj';
 
-function main() {
+for (i = 8; i < 15; i++) {
+    model[i] = pieces[i-8];
+}
 
+function main() {
+    
   //directional light
   var dirLightAlpha = utils.degToRad(180);
   var dirLightBeta  = utils.degToRad(100);
@@ -54,7 +201,10 @@ function main() {
   piecesWorldMatrix[7] = utils.MakeWorld( 0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
 
   piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0]));
-    
+        
+  for(i = 8; i < 15; i++) {
+      piecesWorldMatrix[i] = utils.MakeWorld(selectedTarget.translations[i-8][0], selectedTarget.translations[i-8][1], selectedTarget.translations[i-8][2], selectedTarget.rotation[i-8], 0.0, 0.0, 1.0);
+  }
   var vertexPositionData = new Array();
   var normalData = new Array();
   var indexData = new Array();
@@ -65,9 +215,6 @@ function main() {
       vertexPositionData[i] = model[i].vertices;
       normalData[i] = model[i].vertexNormals;
       indexData[i] = model[i].indices;
-      texCoords[i] = model[i].textures;
-      
-      console.log(vertexPositionData[i]);
   }
 
   //SET Global states (viewport size, viewport background color, Depth test)

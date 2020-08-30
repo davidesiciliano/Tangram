@@ -1,4 +1,4 @@
-const pieces = [
+var pieces = [
     {
         //piece 1
         name: "bigTriangle1",
@@ -108,4 +108,4 @@ const pieces = [
             0.0, 0.0, -1.0
         ]
     }
-]
+];
