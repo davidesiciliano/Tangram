@@ -134,6 +134,41 @@ var targets = [
             [0.0]
         ],
         mirror: false
+    }, 
+    {
+        name: "cat",
+        translations: [
+            [3.0, -2.5, 0.0],
+            [3.83, 2.33, 0.0],
+            [2.5, 5.0, 0.0],
+            [5.83, -2.5, 0.0],
+            [3.5, 3.0, 0.0],
+            [4.5, 3.0, 0.0],
+            [3.83, -1.67, 0.0]
+        ],
+        rotation: [
+            [45.0],
+            [135.0],
+            [180.0], 
+            [90.0], 
+            [0.0],
+            [-90.0],
+            [-90.0]
+        ],
+        mirror: false,
+    },
+    {
+        name: "camel",
+        translations: [],
+        rotation: [],
+        mirror: false,
+    },
+    
+    {
+        name: "turtle",
+        translations: [],
+        rotation: [],
+        mirror: false,
     }
 ]
 
@@ -147,7 +182,7 @@ var model = Array();
 var modelStr = Array();
 
 //then selectable by dropdown menu
-var idSelectedTarget = 0; 
+var idSelectedTarget = 1; 
 var selectedTarget = targets[idSelectedTarget];
 
 modelStr[0] = 'model/piece1.obj';
