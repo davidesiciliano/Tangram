@@ -13,7 +13,7 @@ var model = Array();
 var modelStr = Array();
 
 //then selectable by dropdown menu
-var idSelectedTarget = 2; 
+var idSelectedTarget = 3; 
 var selectedTarget = targets[idSelectedTarget];
 
 modelStr[0] = 'model/piece1.obj';
