@@ -13,9 +13,9 @@
 <body>
 <div class="my-navbar">
   <div class="my-navbar-section">
-    Theta<br/>
+    Alpha<br/>
     <input id="dirSlider1" type="range" min="0" max="1" step="0.01" value="0.5"><br/>
-    Phi<br/>
+    Beta<br/>
     <input id="dirSlider2" type="range" min="0" max="1" step="0.01" value="0"><br/><br/>
     <input id="dirLightEnable" type="checkbox" checked class="my-navbar-option">Directional<br/>
   </div>
@@ -55,14 +55,17 @@
     </select>
   </div>
 </div>
-
-<canvas id="c"></canvas>
+<div id="container">
+  <canvas id="c"></canvas>
+</div>
 </body>
 
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="variables.js"></script>
-<script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="initialize.js"></script>
 <script type="text/javascript" src="drawing.js"></script>
+<script type="text/javascript" src="events.js"></script>
+
 <script type="text/javascript" src="webgl-obj-loader.min.js"></script>
 
 </html>

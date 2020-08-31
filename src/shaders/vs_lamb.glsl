@@ -11,7 +11,7 @@ uniform mat4 pMatrix;     //Contiene la World Matrix: serve per traslare/ruotare
 uniform mat4 nMatrix;     //Serve per il camera space ed è l'inversa
 
 void main() {
-  fsNormal = mat3(nMatrix) * inNormal; 
+  fsNormal = mat3(nMatrix) * inNormal;
   fsPosition = (pMatrix* vec4(inPosition, 1.0)).xyz;
   gl_Position = matrix * vec4(inPosition, 1.0);
 }

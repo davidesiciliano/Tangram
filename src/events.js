@@ -61,18 +61,22 @@
   });
 
   document.getElementById("dirSlider1").addEventListener("input", (e) => {
-    dirLightTheta = utils.degToRad((e.target.value * 90));
+    dirLightAlpha = utils.degToRad((e.target.value * 90));
     console.log(dirLightTheta)
-    directionalLightDir = [Math.cos(dirLightPhi) * Math.sin(dirLightTheta),
-      Math.sin(dirLightPhi) * Math.sin(dirLightTheta),
-      Math.cos(dirLightTheta)];
+    directionalLightDir = [
+      Math.cos(dirLightAlpha)*Math.cos(dirLightBeta),
+      Math.sin(dirLightAlpha),
+      Math.cos(dirLightAlpha) * Math.sin(dirLightBeta)
+    ];
   });
 
   document.getElementById("dirSlider2").addEventListener("input", (e) => {
-    dirLightPhi = utils.degToRad((e.target.value * 360));
-    directionalLightDir = [Math.cos(dirLightPhi) * Math.sin(dirLightTheta),
-      Math.sin(dirLightPhi) * Math.sin(dirLightTheta),
-      Math.cos(dirLightTheta)];
+    dirLightBeta = utils.degToRad((e.target.value * 360));
+    directionalLightDir = [
+      Math.cos(dirLightAlpha)*Math.cos(dirLightBeta),
+      Math.sin(dirLightAlpha),
+      Math.cos(dirLightAlpha) * Math.sin(dirLightBeta)
+    ];
   });
 
   document.getElementById("pointSlider1").addEventListener("input", (e) => {

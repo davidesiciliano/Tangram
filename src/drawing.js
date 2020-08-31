@@ -1,4 +1,4 @@
-var programs = new Array();
+var programsArray = new Array();
 var gl;
 var baseDir;
 var shaderDir;
@@ -26,7 +26,6 @@ function main() {
   var lightDirectionHandle = new Array(), lightColorHandle = new Array();
   var normalMatrixPositionHandle = new Array(), vertexMatrixPositionHandle = new Array();
   var materialDiffColorHandle = new Array();
-  var vaos = new Array();
 
   //first big triangle - positioned
   piecesWorldMatrix[0] = utils.MakeWorld(-0.95, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
@@ -59,7 +58,7 @@ function main() {
     indexData[i] = model[i].indices;
     texCoords[i] = model[i].textures;
 
-    console.log(vertexPositionData[i]);
+    //console.log(vertexPositionData[i]);
   }
 
   //SET Global states (viewport size, viewport background color, Depth test)
@@ -68,92 +67,66 @@ function main() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   gl.enable(gl.DEPTH_TEST);
 
-  //Lambert
-  for (i = 0; i < model.length; i++) {
-    positionAttributeLocation[i] = gl.getAttribLocation(programs[0], "inPosition");
-    normalAttributeLocation[i] = gl.getAttribLocation(programs[0], "inNormal");
-    matrixLocation[i] = gl.getUniformLocation(programs[0], "matrix");
-    materialDiffColorHandle[i] = gl.getUniformLocation(programs[0], 'mDiffColor');
-    lightDirectionHandle[i] = gl.getUniformLocation(programs[0], 'lightDirection');
-    lightColorHandle[i] = gl.getUniformLocation(programs[0], 'lightColor');
-    normalMatrixPositionHandle[i] = gl.getUniformLocation(programs[0], 'nMatrix');
-  }
-//  //Colour by position
-//  positionAttributeLocation[1] = gl.getAttribLocation(programs[1], "inPosition");  
-//      matrixLocation[1] = gl.getUniformLocation(programs[1], "matrix");
-//
-//  //Unlit
-//  positionAttributeLocation[2] = gl.getAttribLocation(programs[2], "inPosition");  
-//      matrixLocation[2] = gl.getUniformLocation(programs[2], "matrix");
-
   var perspectiveMatrix = utils.MakePerspective(30, gl.canvas.width / gl.canvas.height, 0.1, 100.0);
-  var cx = 0.0, cy = 0.0, cz = 20.0;
-  var viewMatrix = utils.MakeView(cx, cy, cz, 0.0, 0.0);
 
-  for (i = 0; i < model.length; i++) {
-    vaos[i] = gl.createVertexArray();
-
-    gl.bindVertexArray(vaos[i]);
-    var positionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexPositionData[i]), gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(positionAttributeLocation[i]);
-    gl.vertexAttribPointer(positionAttributeLocation[i], 3, gl.FLOAT, false, 0, 0);
-
-    var normalBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalData[i]), gl.STATIC_DRAW);
-    gl.enableVertexAttribArray(normalAttributeLocation[i]);
-    gl.vertexAttribPointer(normalAttributeLocation[i], 3, gl.FLOAT, false, 0, 0);
-
-    var indexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexData[i]), gl.STATIC_DRAW);
-  }
+  initializeProgram(gl, ShadersType.item);
 
   drawScene();
 
-  function animate() {
-    var currentTime = (new Date).getTime();
-    var deltaC = (30 * (currentTime - lastUpdateTime)) / 1000.0;
-
-    var curRotation = utils.MakeRotateXYZMatrix(deltaC, -deltaC, deltaC);
-
-    for (i = 0; i < model.length; i++) {
-      piecesWorldMatrix[i] = utils.multiplyMatrices(piecesWorldMatrix[i], curRotation);
-      if (i === 0) {
-        piecesNormalMatrix[i] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[i]));
-      }
-    }
-
-    lastUpdateTime = currentTime;
-  }
-
   function drawScene() {
-    //animate();
+    //Camera
+    var viewMatrix = utils.MakeView(cx, cy, cz, elevation, angle);
 
-    gl.clearColor(0.85, 0.85, 0.85, 1.0);
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    var lightDirMatrix = viewMatrix;
+    var lightPosMatrix = viewMatrix;
 
     for (i = 0; i < model.length; i++) {
-      gl.useProgram(programs[0]);
+      gl.useProgram(programsArray[ShadersType.item]);
 
-      var viewWorldMatrix = utils.multiplyMatrices(viewMatrix, piecesWorldMatrix[i]);
-      var projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, viewWorldMatrix);
-      gl.uniformMatrix4fv(matrixLocation[i], gl.FALSE, utils.transposeMatrix(projectionMatrix));
+      var worldLocation = piecesWorldMatrix[i];
+      var worldMatrix = utils.MakeWorld(piecesWorldMatrix[0], piecesWorldMatrix[1], piecesWorldMatrix[2], piecesWorldMatrix[3], piecesWorldMatrix[4], piecesWorldMatrix[5], piecesWorldMatrix[6]);
 
-      if (i === 0) {
-        gl.uniformMatrix4fv(vertexMatrixPositionHandle[i], gl.FALSE, utils.transposeMatrix(piecesWorldMatrix[i]));
-        gl.uniformMatrix4fv(normalMatrixPositionHandle[i], gl.FALSE, utils.transposeMatrix(piecesNormalMatrix[i]));
+      var worldViewMatrix = utils.multiplyMatrices(viewMatrix, piecesWorldMatrix[i]);
+      var projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, worldViewMatrix);
 
-        gl.uniform4fv(materialDiffColorHandle[i], cubeMaterialColor);
-        gl.uniform3fv(lightDirectionHandle[i], directionalLightDir);
-        gl.uniform4fv(lightColorHandle[i], directionalLightColor);
-      }
+      var normalMatrix = utils.invertMatrix(utils.transposeMatrix(worldViewMatrix));
 
+
+      gl.uniformMatrix4fv(locationsArray[ShadersType.item].matrixLocation, gl.FALSE, utils.transposeMatrix(projectionMatrix));
+      gl.uniformMatrix4fv(locationsArray[ShadersType.item].normalMatrixPositionHandle, gl.FALSE, utils.transposeMatrix(normalMatrix));
+      gl.uniformMatrix4fv(locationsArray[ShadersType.item].vertexMatrixPositionHandle, gl.FALSE, utils.transposeMatrix(worldViewMatrix));
+
+      //LIGHTS
+      gl.uniform4fv(locationsArray[ShadersType.item].materialColorHandle, [piecesAmbientColor[0], piecesAmbientColor[1], piecesAmbientColor[2], 1.0]);
+      gl.uniform4fv(locationsArray[ShadersType.item].specularColorHandle, specularColor);
+      gl.uniform4fv(locationsArray[ShadersType.item].lightSwitch, lightSwitch);
+      gl.uniform1f(locationsArray[ShadersType.item].specShine, specularShine);
+      gl.uniformMatrix4fv(locationsArray[ShadersType.item].lightDirMatrix, gl.FALSE, utils.transposeMatrix(lightDirMatrix));
+      gl.uniformMatrix4fv(locationsArray[ShadersType.item].lightPosMatrix, gl.FALSE, utils.transposeMatrix(lightPosMatrix));
+
+      //Directional Light
+      var directionalLightDirTransform = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), directionalLightDir);
+      gl.uniform3fv(locationsArray[ShadersType.item].directionalLightDir, directionalLightDirTransform);
+      gl.uniform4fv(locationsArray[ShadersType.item].directionalLightCol, directionalLightColor);
+      //Point light
+      gl.uniform3fv(locationsArray[ShadersType.item].pointLightPosition, pointLightPosition);
+      gl.uniform4fv(locationsArray[ShadersType.item].pointLightColor, pointLightColor);
+      gl.uniform1f(locationsArray[ShadersType.item].pointLightDecay, pointLightDecay);
+      gl.uniform1f(locationsArray[ShadersType.item].pointLightTarget, pointLightTarget);
+
+      //Spot light
+      gl.uniform3fv(locationsArray[ShadersType.item].spotLightPosition, spotLightPos);
+      gl.uniform4fv(locationsArray[ShadersType.item].spotLightColor, spotLightColor);
+      var spotLightDirTransform = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), spotLightDir);
+      gl.uniform3fv(locationsArray[ShadersType.item].spotLightDir, spotLightDirTransform);
+      gl.uniform1f(locationsArray[ShadersType.item].spotLightConeOut, spotLightConeOut);
+      gl.uniform1f(locationsArray[ShadersType.item].spotLightConeIn, spotLightConeIn);
+      gl.uniform1f(locationsArray[ShadersType.item].spotLightTarget, spotLightTarget);
+      gl.uniform1f(locationsArray[ShadersType.item].spotLightDecay, spotLightDecay);
 
       gl.bindVertexArray(vaos[i]);
-      gl.drawElements(gl.TRIANGLES, indexData[i].length, gl.UNSIGNED_SHORT, 0);
+      gl.drawElements(gl.TRIANGLES, model[i].indices.length, gl.UNSIGNED_SHORT, 0);
+
     }
 
     window.requestAnimationFrame(drawScene);
@@ -178,28 +151,31 @@ async function init() {
   //MultipleShaders
   await utils.loadFiles([shaderDir + 'vs_lamb.glsl', shaderDir + 'fs_lamb.glsl'], function (shaderText) {
     let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
-    console.log(shaderText[0])
-    console.log(shaderText[1])
     let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
-    console.log("QUI")
 
-    programs[0] = utils.createProgram(gl, vertexShader, fragmentShader);
+    programsArray[0] = utils.createProgram(gl, vertexShader, fragmentShader);
   });
 
-  await utils.loadFiles([shaderDir + 'vs_pos.glsl', shaderDir + 'fs_pos.glsl'], function (shaderText) {
+  /*await utils.loadFiles([shaderDir + 'vs_pos.glsl', shaderDir + 'fs_pos.glsl'], function (shaderText) {
     let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
     let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
 
-    programs[1] = utils.createProgram(gl, vertexShader, fragmentShader);
+    programsArray[1] = utils.createProgram(gl, vertexShader, fragmentShader);
   });
 
   await utils.loadFiles([shaderDir + 'vs_unlit.glsl', shaderDir + 'fs_unlit.glsl'], function (shaderText) {
     let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
     let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
 
-    programs[2] = utils.createProgram(gl, vertexShader, fragmentShader);
-  });
+    programsArray[2] = utils.createProgram(gl, vertexShader, fragmentShader);
+  });*/
 
+  await loadModels();
+
+  main();
+}
+
+async function loadModels() {
   let piece1ObjStr = await utils.get_objstr(baseDir + modelStr[0]);
   model[0] = new OBJ.Mesh(piece1ObjStr);
 
@@ -223,8 +199,6 @@ async function init() {
 
   let trayObjStr = await utils.get_objstr(baseDir + modelStr[7]);
   model[7] = new OBJ.Mesh(trayObjStr);
-
-  main();
 }
 
 window.onload = init;
