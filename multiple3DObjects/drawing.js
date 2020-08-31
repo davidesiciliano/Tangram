@@ -13,7 +13,7 @@ var model = Array();
 var modelStr = Array();
 
 //then selectable by dropdown menu
-var idSelectedTarget = 1; 
+var idSelectedTarget = 2; 
 var selectedTarget = targets[idSelectedTarget];
 
 modelStr[0] = 'model/piece1.obj';
@@ -28,6 +28,11 @@ modelStr[7] = 'model/tray.obj';
 for (i = 8; i < 15; i++) {
     model[i] = pieces[i-8];
 }
+
+var horizontalMirror = [-1.0, 0.0, 0.0, 0.0,
+                        0.0, 1.0, 0.0, 0.0,
+                        0.0, 0.0, 1.0, 0.0,
+                        0.0, 0.0, 0.0, 1.0];
 
 function main() {
     
@@ -74,7 +79,13 @@ function main() {
   piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0]));
         
   for(i = 8; i < 15; i++) {
-      piecesWorldMatrix[i] = utils.MakeWorld(selectedTarget.translations[i-8][0], selectedTarget.translations[i-8][1], selectedTarget.translations[i-8][2], 0.0, 0.0, selectedTarget.rotation[i-8], 1.0);
+      piecesWorldMatrix[i] = utils.identityMatrix();
+      if (selectedTarget.mirror && i == 11) {
+          piecesWorldMatrix[i] = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
+      }
+      
+      var world = utils.MakeWorld(selectedTarget.translations[i-8][0], selectedTarget.translations[i-8][1], selectedTarget.translations[i-8][2], 0.0, 0.0, selectedTarget.rotation[i-8], 1.0);
+      piecesWorldMatrix[i] = utils.multiplyMatrices(world, piecesWorldMatrix[i]);
   }
     
   var vertexPositionData = new Array();
