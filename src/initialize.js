@@ -34,40 +34,40 @@ function initializeProgram(gl, shadersType) {
 
 function getAttributeAndUniformLocation(gl, shadersType) {
 
-  var positionAttributeLocation = gl.getAttribLocation(programsArray[shadersType], "inPosition");
-  var normalAttributeLocation = gl.getAttribLocation(programsArray[shadersType], "inNormal");
+  var positionAttributeLocation = gl.getAttribLocation(programs[shadersType], "inPosition");
+  var normalAttributeLocation = gl.getAttribLocation(programs[shadersType], "inNormal");
 
-  var matrixLocation = gl.getUniformLocation(programsArray[shadersType], "matrix");
-  var materialColorHandle = gl.getUniformLocation(programsArray[shadersType], 'materialColor');
+  var matrixLocation = gl.getUniformLocation(programs[shadersType], "matrix");
+  var materialColorHandle = gl.getUniformLocation(programs[shadersType], 'materialColor');
 
-  var normalMatrixPositionHandle = gl.getUniformLocation(programsArray[shadersType], 'nMatrix');
-  var vertexMatrixPositionHandle = gl.getUniformLocation(programsArray[shadersType], 'pMatrix');
+  var normalMatrixPositionHandle = gl.getUniformLocation(programs[shadersType], 'nMatrix');
+  var vertexMatrixPositionHandle = gl.getUniformLocation(programs[shadersType], 'pMatrix');
 
   //LIGHTS
-  var specularColorHandle = gl.getUniformLocation(programsArray[shadersType], 'specularColor');
-  var specShine = gl.getUniformLocation(programsArray[shadersType], 'SpecShine');
-  var lightSwitch = gl.getUniformLocation(programsArray[shadersType], 'lightSwitch');
-  var lightDirMatrix = gl.getUniformLocation(programsArray[shadersType], 'lightDirMatrix');
-  var lightPosMatrix = gl.getUniformLocation(programsArray[shadersType], 'lightPosMatrix');
+  var specularColorHandle = gl.getUniformLocation(programs[shadersType], 'specularColor');
+  var specShine = gl.getUniformLocation(programs[shadersType], 'SpecShine');
+  var lightSwitch = gl.getUniformLocation(programs[shadersType], 'lightSwitch');
+  var lightDirMatrix = gl.getUniformLocation(programs[shadersType], 'lightDirMatrix');
+  var lightPosMatrix = gl.getUniformLocation(programs[shadersType], 'lightPosMatrix');
 
   //Directional Light
-  var directionalLightDir = gl.getUniformLocation(programsArray[shadersType], 'LADir');
-  var directionalLightCol = gl.getUniformLocation(programsArray[shadersType], 'LACol');
+  var directionalLightDir = gl.getUniformLocation(programs[shadersType], 'LADir');
+  var directionalLightCol = gl.getUniformLocation(programs[shadersType], 'LACol');
 
   //Point light
-  var pointLightPosition = gl.getUniformLocation(programsArray[shadersType], 'LBPos');
-  var pointLightColor = gl.getUniformLocation(programsArray[shadersType], 'LBCol');
-  var pointLightDecay = gl.getUniformLocation(programsArray[shadersType], 'LBDecay');
-  var pointLightTarget = gl.getUniformLocation(programsArray[shadersType], 'LBTarget');
+  var pointLightPosition = gl.getUniformLocation(programs[shadersType], 'LBPos');
+  var pointLightColor = gl.getUniformLocation(programs[shadersType], 'LBCol');
+  var pointLightDecay = gl.getUniformLocation(programs[shadersType], 'LBDecay');
+  var pointLightTarget = gl.getUniformLocation(programs[shadersType], 'LBTarget');
 
   //Spotligh light
-  var spotLightPosition = gl.getUniformLocation(programsArray[shadersType], 'LCPos');
-  var spotLightColor = gl.getUniformLocation(programsArray[shadersType], 'LCCol');
-  var spotLightDir = gl.getUniformLocation(programsArray[shadersType], 'LCDir');
-  var spotLightConeIn = gl.getUniformLocation(programsArray[shadersType], 'LCConeIn');
-  var spotLightConeOut = gl.getUniformLocation(programsArray[shadersType], 'LCConeOut');
-  var spotLightDecay = gl.getUniformLocation(programsArray[shadersType], 'LCDecay');
-  var spotLightTarget = gl.getUniformLocation(programsArray[shadersType], 'LCTarget');
+  var spotLightPosition = gl.getUniformLocation(programs[shadersType], 'LCPos');
+  var spotLightColor = gl.getUniformLocation(programs[shadersType], 'LCCol');
+  var spotLightDir = gl.getUniformLocation(programs[shadersType], 'LCDir');
+  var spotLightConeIn = gl.getUniformLocation(programs[shadersType], 'LCConeIn');
+  var spotLightConeOut = gl.getUniformLocation(programs[shadersType], 'LCConeOut');
+  var spotLightDecay = gl.getUniformLocation(programs[shadersType], 'LCDecay');
+  var spotLightTarget = gl.getUniformLocation(programs[shadersType], 'LCTarget');
 
   locationsArray[shadersType] = {
     "positionAttributeLocation": positionAttributeLocation,

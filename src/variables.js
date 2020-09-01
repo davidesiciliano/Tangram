@@ -23,7 +23,6 @@ var specularShine = 120.0;
 var specularColor = [1.0, 1.0, 1.0, 1.0];
 
 //material colour
-var cubeMaterialColor = [1.0, 0.0, 0.0, 1.0];
 let piecesAmbientColor = [
   [0.0, 0.0, 1.0],
   [0.0, 1.0, 0.0],

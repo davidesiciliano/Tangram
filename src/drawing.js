@@ -1,4 +1,4 @@
-var programsArray = new Array();
+var programs = new Array();
 var gl;
 var baseDir;
 var shaderDir;
@@ -17,7 +17,7 @@ let modelStr = [
 ]
 
 function main() {
-
+  var i;
   var lastUpdateTime = (new Date).getTime();
 
   var piecesNormalMatrix = new Array(), piecesWorldMatrix = new Array();
@@ -74,7 +74,7 @@ function main() {
     let lightPosMatrix = viewMatrix;
 
     for (i = 0; i < model.length; i++) {
-      gl.useProgram(programsArray[ShadersType.item]);
+      gl.useProgram(programs[ShadersType.item]);
 
       let worldViewMatrix = utils.multiplyMatrices(viewMatrix, piecesWorldMatrix[i]);
       let projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, worldViewMatrix);
@@ -144,11 +144,11 @@ async function init() {
   gl.enable(gl.DEPTH_TEST);
 
   //MultipleShaders
-  await utils.loadFiles([shaderDir + 'vs_lamb.glsl', shaderDir + 'fs_lamb.glsl'], function (shaderText) {
+  await utils.loadFiles([shaderDir + 'pieces/vs.glsl', shaderDir + 'pieces/fs.glsl'], function (shaderText) {
     let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
     let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
 
-    programsArray[0] = utils.createProgram(gl, vertexShader, fragmentShader);
+    programs[0] = utils.createProgram(gl, vertexShader, fragmentShader);
   });
 
   /*await utils.loadFiles([shaderDir + 'vs_pos.glsl', shaderDir + 'fs_pos.glsl'], function (shaderText) {

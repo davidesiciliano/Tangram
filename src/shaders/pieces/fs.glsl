@@ -47,12 +47,6 @@ vec4 specularPhong(vec3 lightDir, vec4 lightCol, vec3 normalVec, vec3 eyedirVec)
   return spec;
 }
 
-vec4 specularBlinn(vec3 lightDir, vec4 lightCol, vec3 normalVec, vec3 eyedirVec){
-  vec3 halfVec = normalize(lightDir + eyedirVec);
-  vec4 spec = lightCol * pow(max(dot(normalVec, halfVec), 0.0), SpecShine) * specularColor;
-  return spec;
-}
-
 void main() {
 
   vec3 nNormal = normalize(fsNormal);
@@ -70,7 +64,7 @@ void main() {
   // Spotlight
   vec3 lightPosC = mat3(lightPosMatrix) * LCPos;
   vec3 lightDirC = normalize(lightPosC - fsPosition);
-  //lightDirC = mat3(lightDirMatrix) * lightDirC;
+  lightDirC = mat3(lightDirMatrix) * lightDirC;
 
   vec4 lightColC = LCCol*pow((LCTarget/length(lightPosC - fsPosition)),LCDecay) * clamp(( dot( normalize(lightPosC - fsPosition), LCDir) - cos(radians(LCConeOut/2.0)) ) / (cos(radians(LCConeIn/2.0)) - cos(radians(LCConeOut/2.0)) ), 0.0, 1.0);
 
