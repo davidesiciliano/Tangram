@@ -91,5 +91,3 @@ var targets = [
         mirror: false,
     }
 ];
-
-export {targets};

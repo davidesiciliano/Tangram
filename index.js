@@ -10,7 +10,7 @@ var serverPort = process.env.PORT || 5000;
 
 let serveStatic = require("serve-static");
 
-app.use(serveStatic(__dirname)); //location where static files are located
+app.use(serveStatic(__dirname + "/src")); //location where static files are located
 
 const requestListener = function (req, res) {
   res.writeHead(200);
