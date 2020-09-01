@@ -41,9 +41,9 @@ function main() {
   var dirLightBeta  = utils.degToRad(100);
   var directionalLight = [Math.cos(dirLightAlpha) * Math.cos(dirLightBeta),
               Math.sin(dirLightAlpha), Math.cos(dirLightAlpha) * Math.sin(dirLightBeta)];
-  var directionalLightColor = [0.1, 1.0, 1.0];
+  var directionalLightColor = [1.0, 0.5, 0.3];
   //material color
-  var cubeMaterialColor = [0.5, 0.5, 0.5];
+  var cubeMaterialColor = [0.0, 1.0, 0.5];
   var lastUpdateTime = (new Date).getTime();
 
   var piecesNormalMatrix = new Array(), piecesWorldMatrix = new Array();
