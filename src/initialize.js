@@ -1,3 +1,29 @@
+async function loadModels() {
+  let piece1ObjStr = await utils.get_objstr(baseDir + modelStr[0]);
+  model[0] = new OBJ.Mesh(piece1ObjStr);
+
+  let piece2ObjStr = await utils.get_objstr(baseDir + modelStr[1]);
+  model[1] = new OBJ.Mesh(piece2ObjStr);
+
+  let piece3ObjStr = await utils.get_objstr(baseDir + modelStr[2]);
+  model[2] = new OBJ.Mesh(piece3ObjStr);
+
+  let piece4ObjStr = await utils.get_objstr(baseDir + modelStr[3]);
+  model[3] = new OBJ.Mesh(piece4ObjStr);
+
+  let piece5ObjStr = await utils.get_objstr(baseDir + modelStr[4]);
+  model[4] = new OBJ.Mesh(piece5ObjStr);
+
+  let piece6ObjStr = await utils.get_objstr(baseDir + modelStr[5]);
+  model[5] = new OBJ.Mesh(piece6ObjStr);
+
+  let piece7ObjStr = await utils.get_objstr(baseDir + modelStr[6]);
+  model[6] = new OBJ.Mesh(piece7ObjStr);
+
+  let trayObjStr = await utils.get_objstr(baseDir + modelStr[7]);
+  model[7] = new OBJ.Mesh(trayObjStr);
+}
+
 /* Inizializza il program (identificato da shadersType), creando per quel program l'array (globale)
 contenente le location degli attributi e delle uniformi utilizzati negli shader associati. Infine
 crea il Vertex Array Object e ne fa il binding. */
@@ -20,15 +46,13 @@ function getAttributeAndUniformLocation(gl, shadersType) {
   //LIGHTS
   var specularColorHandle = gl.getUniformLocation(programsArray[shadersType], 'specularColor');
   var specShine = gl.getUniformLocation(programsArray[shadersType], 'SpecShine');
-  //Directional Light
-  var directionalLightDir = gl.getUniformLocation(programsArray[shadersType], 'LADir');
-  var directionalLightCol = gl.getUniformLocation(programsArray[shadersType], 'LACol');
-
-
-  //LIGHTS
   var lightSwitch = gl.getUniformLocation(programsArray[shadersType], 'lightSwitch');
   var lightDirMatrix = gl.getUniformLocation(programsArray[shadersType], 'lightDirMatrix');
   var lightPosMatrix = gl.getUniformLocation(programsArray[shadersType], 'lightPosMatrix');
+
+  //Directional Light
+  var directionalLightDir = gl.getUniformLocation(programsArray[shadersType], 'LADir');
+  var directionalLightCol = gl.getUniformLocation(programsArray[shadersType], 'LACol');
 
   //Point light
   var pointLightPosition = gl.getUniformLocation(programsArray[shadersType], 'LBPos');
@@ -45,14 +69,12 @@ function getAttributeAndUniformLocation(gl, shadersType) {
   var spotLightDecay = gl.getUniformLocation(programsArray[shadersType], 'LCDecay');
   var spotLightTarget = gl.getUniformLocation(programsArray[shadersType], 'LCTarget');
 
-
-  locationsArray[0] = {
+  locationsArray[shadersType] = {
     "positionAttributeLocation": positionAttributeLocation,
     "normalAttributeLocation": normalAttributeLocation,
     "matrixLocation": matrixLocation,
 
     //LIGHTS
-
     "lightPosMatrix": lightPosMatrix,
     "lightDirMatrix": lightDirMatrix,
 
@@ -60,6 +82,7 @@ function getAttributeAndUniformLocation(gl, shadersType) {
     "materialColorHandle": materialColorHandle,
     "specularColorHandle": specularColorHandle,
     "specShine": specShine,
+
     //directional
     "directionalLightDir": directionalLightDir,
     "directionalLightCol": directionalLightCol,
@@ -103,7 +126,7 @@ function createVAO(gl, shadersType) {
 
         putAttributesOnGPU(gl, locationsArray[shadersType].positionAttributeLocation, model[i].vertices, 3);
 
-        putAttributesOnGPU(gl, locationsArray[shadersType].normalAttributeLocation, model[i].normals, 3);
+        putAttributesOnGPU(gl, locationsArray[shadersType].normalAttributeLocation, model[i].vertexNormals, 3);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(model[i].indices), gl.STATIC_DRAW);

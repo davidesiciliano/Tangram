@@ -61,8 +61,8 @@
   });
 
   document.getElementById("dirSlider1").addEventListener("input", (e) => {
-    dirLightAlpha = utils.degToRad((e.target.value * 90));
-    console.log(dirLightTheta)
+    dirLightAlpha = utils.degToRad(e.target.value * 90);
+    console.log(e.target.value * 90)
     directionalLightDir = [
       Math.cos(dirLightAlpha)*Math.cos(dirLightBeta),
       Math.sin(dirLightAlpha),
@@ -71,7 +71,8 @@
   });
 
   document.getElementById("dirSlider2").addEventListener("input", (e) => {
-    dirLightBeta = utils.degToRad((e.target.value * 360));
+    dirLightBeta = utils.degToRad(e.target.value * 360);
+    console.log(e.target.value * 360)
     directionalLightDir = [
       Math.cos(dirLightAlpha)*Math.cos(dirLightBeta),
       Math.sin(dirLightAlpha),

@@ -61,43 +61,32 @@ function main() {
     //console.log(vertexPositionData[i]);
   }
 
-  //SET Global states (viewport size, viewport background color, Depth test)
-  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-  gl.clearColor(0.85, 0.85, 0.85, 1.0);
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  gl.enable(gl.DEPTH_TEST);
-
   var perspectiveMatrix = utils.MakePerspective(30, gl.canvas.width / gl.canvas.height, 0.1, 100.0);
 
   initializeProgram(gl, ShadersType.item);
-
   drawScene();
 
   function drawScene() {
     //Camera
     var viewMatrix = utils.MakeView(cx, cy, cz, elevation, angle);
 
-    var lightDirMatrix = viewMatrix;
-    var lightPosMatrix = viewMatrix;
+    let lightDirMatrix = viewMatrix;
+    let lightPosMatrix = viewMatrix;
 
     for (i = 0; i < model.length; i++) {
       gl.useProgram(programsArray[ShadersType.item]);
 
-      var worldLocation = piecesWorldMatrix[i];
-      var worldMatrix = utils.MakeWorld(piecesWorldMatrix[0], piecesWorldMatrix[1], piecesWorldMatrix[2], piecesWorldMatrix[3], piecesWorldMatrix[4], piecesWorldMatrix[5], piecesWorldMatrix[6]);
+      let worldViewMatrix = utils.multiplyMatrices(viewMatrix, piecesWorldMatrix[i]);
+      let projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, worldViewMatrix);
 
-      var worldViewMatrix = utils.multiplyMatrices(viewMatrix, piecesWorldMatrix[i]);
-      var projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, worldViewMatrix);
-
-      var normalMatrix = utils.invertMatrix(utils.transposeMatrix(worldViewMatrix));
-
+      let normalMatrix = utils.invertMatrix(utils.transposeMatrix(worldViewMatrix));
 
       gl.uniformMatrix4fv(locationsArray[ShadersType.item].matrixLocation, gl.FALSE, utils.transposeMatrix(projectionMatrix));
       gl.uniformMatrix4fv(locationsArray[ShadersType.item].normalMatrixPositionHandle, gl.FALSE, utils.transposeMatrix(normalMatrix));
       gl.uniformMatrix4fv(locationsArray[ShadersType.item].vertexMatrixPositionHandle, gl.FALSE, utils.transposeMatrix(worldViewMatrix));
 
       //LIGHTS
-      gl.uniform4fv(locationsArray[ShadersType.item].materialColorHandle, [piecesAmbientColor[0], piecesAmbientColor[1], piecesAmbientColor[2], 1.0]);
+      gl.uniform4fv(locationsArray[ShadersType.item].materialColorHandle, [piecesAmbientColor[i][0], piecesAmbientColor[i][1], piecesAmbientColor[i][2], 1.0]);
       gl.uniform4fv(locationsArray[ShadersType.item].specularColorHandle, specularColor);
       gl.uniform4fv(locationsArray[ShadersType.item].lightSwitch, lightSwitch);
       gl.uniform1f(locationsArray[ShadersType.item].specShine, specularShine);
@@ -105,9 +94,10 @@ function main() {
       gl.uniformMatrix4fv(locationsArray[ShadersType.item].lightPosMatrix, gl.FALSE, utils.transposeMatrix(lightPosMatrix));
 
       //Directional Light
-      var directionalLightDirTransform = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), directionalLightDir);
+      let directionalLightDirTransform = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), directionalLightDir);
       gl.uniform3fv(locationsArray[ShadersType.item].directionalLightDir, directionalLightDirTransform);
       gl.uniform4fv(locationsArray[ShadersType.item].directionalLightCol, directionalLightColor);
+
       //Point light
       gl.uniform3fv(locationsArray[ShadersType.item].pointLightPosition, pointLightPosition);
       gl.uniform4fv(locationsArray[ShadersType.item].pointLightColor, pointLightColor);
@@ -117,7 +107,7 @@ function main() {
       //Spot light
       gl.uniform3fv(locationsArray[ShadersType.item].spotLightPosition, spotLightPos);
       gl.uniform4fv(locationsArray[ShadersType.item].spotLightColor, spotLightColor);
-      var spotLightDirTransform = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), spotLightDir);
+      let spotLightDirTransform = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), spotLightDir);
       gl.uniform3fv(locationsArray[ShadersType.item].spotLightDir, spotLightDirTransform);
       gl.uniform1f(locationsArray[ShadersType.item].spotLightConeOut, spotLightConeOut);
       gl.uniform1f(locationsArray[ShadersType.item].spotLightConeIn, spotLightConeIn);
@@ -125,8 +115,7 @@ function main() {
       gl.uniform1f(locationsArray[ShadersType.item].spotLightDecay, spotLightDecay);
 
       gl.bindVertexArray(vaos[i]);
-      gl.drawElements(gl.TRIANGLES, model[i].indices.length, gl.UNSIGNED_SHORT, 0);
-
+      gl.drawElements(gl.TRIANGLES, indexData[i].length, gl.UNSIGNED_SHORT, 0);
     }
 
     window.requestAnimationFrame(drawScene);
@@ -147,6 +136,12 @@ async function init() {
     return;
   }
   utils.resizeCanvasToDisplaySize(gl.canvas);
+
+  //SET Global states (viewport size, viewport background color, Depth test)
+  gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+  gl.clearColor(0.85, 0.85, 0.85, 1.0);
+  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+  gl.enable(gl.DEPTH_TEST);
 
   //MultipleShaders
   await utils.loadFiles([shaderDir + 'vs_lamb.glsl', shaderDir + 'fs_lamb.glsl'], function (shaderText) {
@@ -173,32 +168,6 @@ async function init() {
   await loadModels();
 
   main();
-}
-
-async function loadModels() {
-  let piece1ObjStr = await utils.get_objstr(baseDir + modelStr[0]);
-  model[0] = new OBJ.Mesh(piece1ObjStr);
-
-  let piece2ObjStr = await utils.get_objstr(baseDir + modelStr[1]);
-  model[1] = new OBJ.Mesh(piece2ObjStr);
-
-  let piece3ObjStr = await utils.get_objstr(baseDir + modelStr[2]);
-  model[2] = new OBJ.Mesh(piece3ObjStr);
-
-  let piece4ObjStr = await utils.get_objstr(baseDir + modelStr[3]);
-  model[3] = new OBJ.Mesh(piece4ObjStr);
-
-  let piece5ObjStr = await utils.get_objstr(baseDir + modelStr[4]);
-  model[4] = new OBJ.Mesh(piece5ObjStr);
-
-  let piece6ObjStr = await utils.get_objstr(baseDir + modelStr[5]);
-  model[5] = new OBJ.Mesh(piece6ObjStr);
-
-  let piece7ObjStr = await utils.get_objstr(baseDir + modelStr[6]);
-  model[6] = new OBJ.Mesh(piece7ObjStr);
-
-  let trayObjStr = await utils.get_objstr(baseDir + modelStr[7]);
-  model[7] = new OBJ.Mesh(trayObjStr);
 }
 
 window.onload = init;

@@ -5,8 +5,6 @@ precision mediump float;
 in vec3 fsNormal;
 in vec3 fsPosition;
 
-out vec4 outColor;
-
 uniform mat4 lightDirMatrix;
 uniform mat4 lightPosMatrix;
 
@@ -14,6 +12,7 @@ uniform vec4 lightSwitch;
 
 uniform vec4 materialColor;
 uniform vec4 specularColor;
+
 //Directional
 uniform vec3 LADir;
 uniform vec4 LACol;
@@ -35,9 +34,10 @@ uniform float LCTarget;
 
 uniform float SpecShine;
 
+out vec4 outColor;
 
 vec4 diffuseLambert(vec3 lightDir, vec4 lightCol, vec3 normalVec, vec4 diffColor) {
-  vec4 diff = diffColor * lightCol * clamp(dot(normalVec, lightDir),0.0,1.0);
+  vec4 diff = diffColor * lightCol * max(dot(normalVec, lightDir),0.0);
   return diff;
 }
 
@@ -70,34 +70,22 @@ void main() {
   // Spotlight
   vec3 lightPosC = mat3(lightPosMatrix) * LCPos;
   vec3 lightDirC = normalize(lightPosC - fsPosition);
-  lightDirC = mat3(lightDirMatrix) * lightDirC;
+  //lightDirC = mat3(lightDirMatrix) * lightDirC;
 
-  vec4 lightColC = LCCol*pow((LCTarget/length(lightPosC - fsPosition)),LCDecay)
-
-  *clamp(
-  ( dot( normalize(lightPosC - fsPosition), LCDir) - cos(radians(LCConeOut/2.0)) )
-  / (cos(radians(LCConeIn/2.0)) - cos(radians(LCConeOut/2.0)) ), 0.0, 1.0);
-
-
+  vec4 lightColC = LCCol*pow((LCTarget/length(lightPosC - fsPosition)),LCDecay) * clamp(( dot( normalize(lightPosC - fsPosition), LCDir) - cos(radians(LCConeOut/2.0)) ) / (cos(radians(LCConeIn/2.0)) - cos(radians(LCConeOut/2.0)) ), 0.0, 1.0);
 
   vec4 LADiffuse = diffuseLambert(lightDirA, lightColA, nNormal, materialColor);
   vec4 LBDiffuse = diffuseLambert(lightDirB, lightColB, nNormal, materialColor);
   vec4 LCDiffuse = diffuseLambert(lightDirC, lightColC, nNormal, materialColor);
-
 
   vec4 LASpecular = specularPhong(lightDirA, lightColA, nNormal, nEyeDirection);
   vec4 LBSpecular = specularPhong(lightDirB, lightColB, nNormal, nEyeDirection);
   vec4 LCSpecular = specularPhong(lightDirC, lightColC, nNormal, nEyeDirection);
 
 
-  vec4 diffuse = LADiffuse * lightSwitch.x +
-  LBDiffuse * lightSwitch.y +
-  LCDiffuse * lightSwitch.z;
+  vec4 diffuse = LADiffuse * lightSwitch.x + LBDiffuse * lightSwitch.y + LCDiffuse * lightSwitch.z;
 
-  vec4 specular = LASpecular * lightSwitch.x +
-  LBSpecular * lightSwitch.y +
-  LCSpecular * lightSwitch.z;
-
+  vec4 specular = LASpecular * lightSwitch.x + LBSpecular * lightSwitch.y + LCSpecular * lightSwitch.z;
 
   vec4 out_color = clamp(diffuse + specular, 0.0, 1.0);
   outColor = vec4(out_color.rgb, 1.0);
