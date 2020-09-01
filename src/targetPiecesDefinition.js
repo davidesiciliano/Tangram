@@ -109,5 +109,3 @@ var pieces = [
         ]
     }
 ];
-
-export {pieces};
