@@ -1,74 +1,41 @@
-var programs = new Array();
-var gl;
-var baseDir;
-var shaderDir;
-
-var model = Array();
-
-let modelStr = [
-  'model/piece1.obj',
-  'model/piece2.obj',
-  'model/piece3.obj',
-  'model/piece4.obj',
-  'model/piece5.obj',
-  'model/piece6.obj',
-  'model/piece7.obj',
-  'model/tray.obj'
-]
-
-var idSelectedTarget = 2; 
-var selectedTarget = targets[idSelectedTarget];
-
-var i;
-
-for (i = 8; i < 15; i++) {
-    model[i] = pieces[i-8];
-}
-
 function main() {
-  var lastUpdateTime = (new Date).getTime();
-
   var piecesNormalMatrix = new Array(), piecesWorldMatrix = new Array();
-  var positionAttributeLocation = new Array(), normalAttributeLocation = new Array();
-  var matrixLocation = new Array(), materialDiffColorHandle = new Array();
-  var lightDirectionHandle = new Array(), lightColorHandle = new Array();
-  var normalMatrixPositionHandle = new Array(), vertexMatrixPositionHandle = new Array();
-  var materialDiffColorHandle = new Array();
 
-  //first big triangle - positioned
+  //region: creates world matrices for initial position of pieces
+  //first big triangle
   piecesWorldMatrix[0] = utils.MakeWorld(-0.95, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
   //middle triangle
   piecesWorldMatrix[1] = utils.MakeWorld(1.5, -1.35, -0.10, 90.0, 90.0, 0.0, 1.0);
   //first small triangle
   piecesWorldMatrix[2] = utils.MakeWorld(0.58, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
-  //trapezoid - positioned 
+  //trapezoid
   piecesWorldMatrix[3] = utils.MakeWorld(1.6, 0.55, -0.10, 0.0, 90.0, 0.0, 1.0);
-  //square - positioned
+  //square
   piecesWorldMatrix[4] = utils.MakeWorld(0.05, -0.9, -0.10, 0.0, 90.0, 0.0, 1.0);
-  //second small triangle - positioned
+  //second small triangle
   piecesWorldMatrix[5] = utils.MakeWorld(-1, -1.5, -0.10, 180.0, 90.0, 0.0, 1.0);
-  //second big triangle - positioned
+  //second big triangle
   piecesWorldMatrix[6] = utils.MakeWorld(0.0, 1.2, -0.10, 180.0, 90.0, 0.0, 1.0);
   //tray - positioned
   piecesWorldMatrix[7] = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
 
-  
-  for(i = 0; i < 8; i++) {
-        piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
+  for (i = 0; i < 8; i++) {
+    piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
   }
-    
+  //endregion
+
   piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0]));
 
-  for(i = 8; i < 15; i++) {
-      piecesWorldMatrix[i] = utils.identityMatrix();
-      if (selectedTarget.mirror && i == 11) {
-          piecesWorldMatrix[i] = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
-      }
-      
-      var world = utils.MakeWorld(selectedTarget.translations[i-8][0], selectedTarget.translations[i-8][1], selectedTarget.translations[i-8][2], 0.0, 0.0, selectedTarget.rotation[i-8], 1.0);
-      piecesWorldMatrix[i] = utils.multiplyMatrices(world, piecesWorldMatrix[i]);
+  for (i = 8; i < 15; i++) {
+    piecesWorldMatrix[i] = utils.identityMatrix();
+    if (selectedTarget.mirror && i == 11) {
+      piecesWorldMatrix[i] = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
+    }
+
+    var world = utils.MakeWorld(selectedTarget.translations[i - 8][0], selectedTarget.translations[i - 8][1], selectedTarget.translations[i - 8][2], 0.0, 0.0, selectedTarget.rotation[i - 8], 1.0);
+    piecesWorldMatrix[i] = utils.multiplyMatrices(world, piecesWorldMatrix[i]);
   }
-    
+
   var vertexPositionData = new Array();
   var normalData = new Array();
   var indexData = new Array();

@@ -1,9 +1,31 @@
-var horizontalMirror = [-1.0, 0.0, 0.0, 0.0,
-                        0.0, 1.0, 0.0, 0.0,
-                        0.0, 0.0, 1.0, 0.0,
-                        0.0, 0.0, 0.0, 1.0];
+var programs = new Array();
+var gl;
+var baseDir;
+var shaderDir;
 
- var translate = utils.MakeWorld(-5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
+var model = Array();
+
+let modelStr = [
+  'model/piece1.obj',
+  'model/piece2.obj',
+  'model/piece3.obj',
+  'model/piece4.obj',
+  'model/piece5.obj',
+  'model/piece6.obj',
+  'model/piece7.obj',
+  'model/tray.obj'
+]
+
+var idSelectedTarget = 2;
+var selectedTarget = targets[idSelectedTarget];
+
+var horizontalMirror = [
+  -1.0, 0.0, 0.0, 0.0,
+  0.0, 1.0, 0.0, 0.0,
+  0.0, 0.0, 1.0, 0.0,
+  0.0, 0.0, 0.0, 1.0];
+
+var translate = utils.MakeWorld(-5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
 var locationsArray = [];
 
@@ -40,12 +62,12 @@ let piecesAmbientColor = [
   [1.0, 165.0 / 255, 0.0],
   [1.0, 1.0, 1.0],
   [0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0],
-    [0.0, 0.0, 0.0]
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0]
 ];
 
 // the light types are directionalLight, pointLight, spotLight, the fourth element is needed in order to have 4 elements

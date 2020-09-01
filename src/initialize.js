@@ -22,6 +22,10 @@ async function loadModels() {
 
   let trayObjStr = await utils.get_objstr(baseDir + modelStr[7]);
   model[7] = new OBJ.Mesh(trayObjStr);
+
+  for (var i = 8; i < 15; i++) {
+    model[i] = pieces[i - 8];
+  }
 }
 
 /* Inizializza il program (identificato da shadersType), creando per quel program l'array (globale)
