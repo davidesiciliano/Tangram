@@ -2,7 +2,7 @@
 
 var targets = [
     {
-        name: "swan",
+        name: "Swan",
         translations: [
             [5.0, 1.0, 0.0],
             [5.0, 1.0, 0.0],
@@ -24,7 +24,7 @@ var targets = [
         mirror: false
     }, 
     {
-        name: "cat",
+        name: "Cat",
         translations: [
             [3.0, -2.5, 0.0],
             [3.83, 2.33, 0.0],
@@ -46,7 +46,7 @@ var targets = [
         mirror: false,
     },
     {
-        name: "camel",
+        name: "Camel",
         translations: [
             [2.83, 0.83, 0.0],
             [2.83, 0.83, 0.0],
@@ -69,7 +69,7 @@ var targets = [
     },
     
     {
-        name: "man on horse",
+        name: "Man on horse",
         translations: [
             [8.24, -2.41, 0.0],
             [5.41, 0.41, 0.0],

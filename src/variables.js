@@ -3,6 +3,14 @@ var gl;
 var baseDir;
 var shaderDir;
 
+var piecesWorldMatrix = new Array();
+var piecesNormalMatrix = new Array();
+
+var vertexPositionData = new Array();
+var normalData = new Array();
+var indexData = new Array();
+var texCoords = new Array();
+
 var model = Array();
 
 let modelStr = [
@@ -16,7 +24,7 @@ let modelStr = [
   'model/tray.obj'
 ]
 
-var idSelectedTarget = 2;
+var idSelectedTarget = 1;
 var selectedTarget = targets[idSelectedTarget];
 
 var horizontalMirror = [
