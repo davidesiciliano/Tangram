@@ -5,8 +5,7 @@ in vec3 inNormal;
 
 uniform mat4 matrix;      //Perspective * View * World = Projection
 uniform mat4 pMatrix;     //Contiene la World Matrix: serve per traslare/ruotare/scalare i pezzi
-uniform mat4 nMatrix;     //Serve per il camera space ed è l'inversa
-
+uniform mat4 nMatrix;     //World space -> inverse of the transpose of the world matrix
 out vec3 fsNormal;
 out vec3 fsPosition;
 

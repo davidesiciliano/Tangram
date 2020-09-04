@@ -8,11 +8,7 @@ function main() {
   drawScene();
 
   function drawScene() {
-    //Camera
     var viewMatrix = utils.MakeView(cx, cy, cz, elevation, angle);
-
-    let lightDirMatrix = viewMatrix;
-    let lightPosMatrix = viewMatrix;
 
     for (i = 0; i < model.length; i++) {
       gl.useProgram(programs[ShadersType.item]);
@@ -31,12 +27,9 @@ function main() {
       gl.uniform4fv(locationsArray[ShadersType.item].specularColorHandle, specularColor);
       gl.uniform4fv(locationsArray[ShadersType.item].lightSwitch, lightSwitch);
       gl.uniform1f(locationsArray[ShadersType.item].specShine, specularShine);
-      gl.uniformMatrix4fv(locationsArray[ShadersType.item].lightDirMatrix, gl.FALSE, utils.transposeMatrix(lightDirMatrix));
-      gl.uniformMatrix4fv(locationsArray[ShadersType.item].lightPosMatrix, gl.FALSE, utils.transposeMatrix(lightPosMatrix));
 
       //Directional Light
-      let directionalLightDirTransform = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), directionalLightDir);
-      gl.uniform3fv(locationsArray[ShadersType.item].directionalLightDir, directionalLightDirTransform);
+      gl.uniform3fv(locationsArray[ShadersType.item].directionalLightDir, directionalLightDir);
       gl.uniform4fv(locationsArray[ShadersType.item].directionalLightCol, directionalLightColor);
 
       //Point light
@@ -48,8 +41,7 @@ function main() {
       //Spot light
       gl.uniform3fv(locationsArray[ShadersType.item].spotLightPosition, spotLightPos);
       gl.uniform4fv(locationsArray[ShadersType.item].spotLightColor, spotLightColor);
-      let spotLightDirTransform = utils.multiplyMatrix3Vector3(utils.sub3x3from4x4(lightDirMatrix), spotLightDir);
-      gl.uniform3fv(locationsArray[ShadersType.item].spotLightDir, spotLightDirTransform);
+      gl.uniform3fv(locationsArray[ShadersType.item].spotLightDir, spotLightDir);
       gl.uniform1f(locationsArray[ShadersType.item].spotLightConeOut, spotLightConeOut);
       gl.uniform1f(locationsArray[ShadersType.item].spotLightConeIn, spotLightConeIn);
       gl.uniform1f(locationsArray[ShadersType.item].spotLightTarget, spotLightTarget);

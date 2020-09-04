@@ -5,9 +5,6 @@ precision mediump float;
 in vec3 fsNormal;
 in vec3 fsPosition;
 
-uniform mat4 lightDirMatrix;
-uniform mat4 lightPosMatrix;
-
 uniform vec4 lightSwitch;
 
 uniform vec4 materialColor;
@@ -53,18 +50,18 @@ void main() {
   vec3 nEyeDirection = normalize ((0.0, 0.0, 0.0) - fsPosition);
 
   //Directional light
-  vec3 lightDirA = mat3(lightDirMatrix) * LADir;
+  vec3 lightDirA = LADir;
   vec4 lightColA = LACol;
 
   // Single point light with decay
-  vec3 lightPosB = mat3(lightPosMatrix) * LBPos;
+  vec3 lightPosB = LBPos;
   vec3 lightDirB = normalize(lightPosB - fsPosition);
   vec4 lightColB = LBCol * pow((LBTarget/length(lightPosB - fsPosition)), LCDecay);
 
   // Spotlight
-  vec3 lightPosC = mat3(lightPosMatrix) * LCPos;
+  vec3 lightPosC = LCPos;
   vec3 lightDirC = normalize(lightPosC - fsPosition);
-  lightDirC = mat3(lightDirMatrix) * lightDirC;
+  lightDirC = lightDirC;
 
   vec4 lightColC = LCCol*pow((LCTarget/length(lightPosC - fsPosition)),LCDecay) * clamp(( dot( normalize(lightPosC - fsPosition), LCDir) - cos(radians(LCConeOut/2.0)) ) / (cos(radians(LCConeIn/2.0)) - cos(radians(LCConeOut/2.0)) ), 0.0, 1.0);
 

@@ -96,8 +96,6 @@ function getAttributeAndUniformLocation(gl, shadersType) {
   var specularColorHandle = gl.getUniformLocation(programs[shadersType], 'specularColor');
   var specShine = gl.getUniformLocation(programs[shadersType], 'SpecShine');
   var lightSwitch = gl.getUniformLocation(programs[shadersType], 'lightSwitch');
-  var lightDirMatrix = gl.getUniformLocation(programs[shadersType], 'lightDirMatrix');
-  var lightPosMatrix = gl.getUniformLocation(programs[shadersType], 'lightPosMatrix');
 
   //Directional Light
   var directionalLightDir = gl.getUniformLocation(programs[shadersType], 'LADir');
@@ -124,9 +122,6 @@ function getAttributeAndUniformLocation(gl, shadersType) {
     "matrixLocation": matrixLocation,
 
     //LIGHTS
-    "lightPosMatrix": lightPosMatrix,
-    "lightDirMatrix": lightDirMatrix,
-
     "lightSwitch": lightSwitch,
     "materialColorHandle": materialColorHandle,
     "specularColorHandle": specularColorHandle,
