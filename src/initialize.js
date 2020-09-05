@@ -43,9 +43,9 @@ function initPositions() {
   //middle triangle
   piecesWorldMatrix[1] = utils.MakeWorld(1.43125, -1.346947, -0.10, 90.0, 90.0, 0.0, 1.0);
   //first small triangle
-  piecesWorldMatrix[2] = utils.MakeWorld(0.58, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrix[2] = utils.MakeWorld(0.532533, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
   //trapezoid
-  piecesWorldMatrix[3] = utils.MakeWorld(1.6, 0.55, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrix[3] = utils.MakeWorld(1.549651, 0.519417, -0.10, 0.0, 90.0, 0.0, 1.0);
   //square
   piecesWorldMatrix[4] = utils.MakeWorld(-0.016485, -0.875, -0.10, 0.0, 90.0, 0.0, 1.0);
   //second small triangle
