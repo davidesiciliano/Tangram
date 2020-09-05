@@ -41,13 +41,6 @@ async function init() {
     programs[ShadersType.floor] = utils.createProgram(gl, vertexShader, fragmentShader);
   });
 
-  /*await utils.loadFiles([shaderDir + 'vs_unlit.glsl', shaderDir + 'fs_unlit.glsl'], function (shaderText) {
-    let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
-    let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
-
-    programsArray[2] = utils.createProgram(gl, vertexShader, fragmentShader);
-  });*/
-
   await loadModels();
 
   main();

@@ -24,21 +24,10 @@ var piecesIndexData = new Array();
 var piecesVaos = new Array();
 //endregion
 
-//region: targetPieces
-//endregion
-
 //region: floor
 var floorWorldMatrix;
 var floorNormalMatrix;
 //endregion
-
-
-var vertexPositionData = new Array();
-var normalData = new Array();
-var indexData = new Array();
-var texCoords = new Array();
-
-var model = Array();
 
 var idSelectedTarget = 1;
 var selectedTarget = targets[idSelectedTarget];
@@ -55,11 +44,8 @@ var locationsArray = [];
 
 let ShadersType = {
   pieces: 0,
-  floor: 1,
-  targetPieces: 2
+  floor: 1
 };
-
-var vaos = new Array();
 
 //region: CAMERA
 var cx = 0.5;
@@ -82,10 +68,15 @@ let piecesMaterialColor = [
   [1.0, 0.0, 0.0],
   [128.0 / 255, 0.0, 128.0 / 255],
   [1.0, 165.0 / 255, 0.0],
-  [1.0, 1.0, 1.0]
+  [1.0, 1.0, 1.0],
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0],
+  [0.0, 0.0, 0.0]
 ];
-
-let floorMaterialColor = [1.0, 0.0, 0.0];
 
 // the light types are directionalLight, pointLight, spotLight, the fourth element is needed in order to have 4 elements
 // if light is active lightSwitch[n] = 1

@@ -35,8 +35,7 @@
   document.getElementById("dirLightEnable").addEventListener("change", () => {
     if (document.getElementById("dirLightEnable").checked) {
       lightSwitch[0] = 1;
-    }
-    else {
+    } else {
       lightSwitch[0] = 0;
     }
   });
@@ -44,8 +43,7 @@
   document.getElementById("pointLightEnable").addEventListener("change", () => {
     if (document.getElementById("pointLightEnable").checked) {
       lightSwitch[1] = 1;
-    }
-    else {
+    } else {
       lightSwitch[1] = 0;
     }
   });
@@ -53,8 +51,7 @@
   document.getElementById("spotLightEnable").addEventListener("change", () => {
     if (document.getElementById("spotLightEnable").checked) {
       lightSwitch[2] = 1;
-    }
-    else {
+    } else {
       lightSwitch[2] = 0;
     }
   });
@@ -62,7 +59,7 @@
   document.getElementById("dirSlider1").addEventListener("input", (e) => {
     dirLightAlpha = utils.degToRad(e.target.value * 90);
     directionalLightDir = [
-      Math.cos(dirLightAlpha)*Math.cos(dirLightBeta),
+      Math.cos(dirLightAlpha) * Math.cos(dirLightBeta),
       Math.sin(dirLightAlpha),
       Math.cos(dirLightAlpha) * Math.sin(dirLightBeta)
     ];
@@ -71,7 +68,7 @@
   document.getElementById("dirSlider2").addEventListener("input", (e) => {
     dirLightBeta = utils.degToRad(e.target.value * 360);
     directionalLightDir = [
-      Math.cos(dirLightAlpha)*Math.cos(dirLightBeta),
+      Math.cos(dirLightAlpha) * Math.cos(dirLightBeta),
       Math.sin(dirLightAlpha),
       Math.cos(dirLightAlpha) * Math.sin(dirLightBeta)
     ];

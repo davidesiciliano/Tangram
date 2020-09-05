@@ -23,24 +23,20 @@ async function loadModels() {
   let trayObjStr = await utils.get_objstr(baseDir + piecesModelLocations[7]);
   piecesModel[7] = new OBJ.Mesh(trayObjStr);
 
+  for (var i = 8; i < 15; i++) {
+    piecesModel[i] = pieces[i - 8];
+  }
+
   //Extracts the vertices, normals, indices and uv coords from the models we imported
-  for ( var i = 0; i < piecesModel.length; i++) {
+  for (i = 0; i < piecesModel.length; i++) {
     piecesVertexPositionData[i] = piecesModel[i].vertices;
-    piecesNormalData[i] = piecesModel[i].vertexNormals;
+    if (i > 7) {
+      piecesNormalData[i] = piecesModel[i].normals;
+    } else {
+      piecesNormalData[i] = piecesModel[i].vertexNormals;
+    }
     piecesIndexData[i] = piecesModel[i].indices;
   }
-
-  /*for (var i = 8; i < 15; i++) {
-    model[i] = pieces[i - 8];
-  }
-
-  //Extracts the vertices, normals, indices and uv coords from the models we imported
-  for (i = 8; i < model.length; i++) {
-    vertexPositionData[i] = model[i].vertices;
-    normalData[i] = model[i].normals;
-    indexData[i] = model[i].indices;
-    texCoords[i] = model[i].texture;
-  }*/
 }
 
 function initPositions() {
@@ -73,18 +69,22 @@ function initPositions() {
   floorNormalMatrix = utils.invertMatrix(utils.transposeMatrix(floorWorldMatrix));
   //endregion
 
-  //todo: solution position
-  /*
   for (i = 8; i < 15; i++) {
     piecesWorldMatrix[i] = utils.identityMatrix();
     if (selectedTarget.mirror && i === 11) {
       piecesWorldMatrix[i] = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
     }
 
-    var world = utils.MakeWorld(selectedTarget.translations[i - 8][0], selectedTarget.translations[i - 8][1], selectedTarget.translations[i - 8][2], 0.0, 0.0, selectedTarget.rotation[i - 8], 1.0);
+    let world = utils.MakeWorld(
+      selectedTarget.translations[i - 8][0],
+      selectedTarget.translations[i - 8][1],
+      selectedTarget.translations[i - 8][2],
+      0.0,
+      0.0,
+      selectedTarget.rotation[i - 8],
+      1.0);
     piecesWorldMatrix[i] = utils.multiplyMatrices(world, piecesWorldMatrix[i]);
   }
-   */
 }
 
 /* Inizializza il program (identificato da shadersType), creando per quel program l'array (globale)
@@ -102,20 +102,8 @@ function getAttributeAndUniformLocation(gl, shadersType) {
   var matrixLocation = gl.getUniformLocation(programs[shadersType], "matrix");
   var materialColorHandle;
 
-  if (shadersType === ShadersType.pieces || shadersType === ShadersType.targetPieces)
+  if (shadersType === ShadersType.pieces)
     materialColorHandle = gl.getUniformLocation(programs[shadersType], 'materialColor');
-
-  //todo aggiungere shader soluzione
-  /*if (shadersType === ShadersType.SOLUTION) {
-    locationsArray[shadersType] = {
-      "positionAttributeLocation": positionAttributeLocation,
-      "normalAttributeLocation": normalAttributeLocation,
-      "matrixLocation": matrixLocation,
-
-      "materialColorHandle": materialColorHandle,
-    };
-    return;
-  }*/
 
   var normalMatrixPositionHandle = gl.getUniformLocation(programs[shadersType], 'nMatrix');
   var vertexMatrixPositionHandle = gl.getUniformLocation(programs[shadersType], 'pMatrix');
@@ -226,15 +214,12 @@ function putAttributesOnGPU(gl, location, data, length) {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.STATIC_DRAW);
   gl.enableVertexAttribArray(location);
   gl.vertexAttribPointer(location, length, gl.FLOAT, false, 0, 0);
-
 }
 
 function createVAO(gl, shadersType) {
   switch (shadersType) {
-
     case ShadersType.pieces:
       for (var i = 0; i < piecesModel.length; i++) {
-
         piecesVaos[i] = gl.createVertexArray();
         gl.bindVertexArray(piecesVaos[i]);
 
@@ -243,7 +228,7 @@ function createVAO(gl, shadersType) {
         putAttributesOnGPU(gl, locationsArray[shadersType].normalAttributeLocation, piecesNormalData[i], 3);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(piecesModel[i].indices), gl.STATIC_DRAW);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(piecesIndexData[i]), gl.STATIC_DRAW);
       }
       break;
 
@@ -262,19 +247,6 @@ function createVAO(gl, shadersType) {
 
       createTexture(gl);
       break;
-
-    /*case ShadersType.SOLUTION:
-
-      for (var i = 0; i < assetsData.length; i++) {
-        assetsData[i].drawInfo.vaoOverlay = gl.createVertexArray();
-        gl.bindVertexArray(assetsData[i].drawInfo.vaoOverlay);
-
-        putAttributesOnGPU(gl, locationsArray[shadersType].positionAttributeLocation, assetsData[i].structInfo.vertices2D, 3);
-
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(assetsData[i].structInfo.indices2D), gl.STATIC_DRAW);
-      }
-      break;*/
   }
 }
 
@@ -283,7 +255,7 @@ function createTexture(gl) {
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, floor.texture);
   var image = new Image();
-  image.src = "model/wood_texture.png";
+  image.src = "model/wood_texture.png"; //todo change texture
   image.onload = function () {
     gl.bindTexture(gl.TEXTURE_2D, floor.texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);

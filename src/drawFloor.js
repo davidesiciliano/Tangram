@@ -21,7 +21,6 @@ function drawFloor() {
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, floor.texture);
     gl.uniform1i(locationsArray[ShadersType.floor].textLocation, 0);
-    gl.uniformMatrix4fv(locationsArray[ShadersType.floor].perspectiveLocation, gl.FALSE, perspectiveMatrix); //todo provare a togliere
 
     //LIGHTS
     gl.uniform4fv(locationsArray[ShadersType.floor].specularColorHandle, specularColor);
