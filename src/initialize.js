@@ -111,7 +111,14 @@ function piecesInSolutionPosition() {
         world3 = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
     }
     world3 = utils.multiplyMatrices(utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0), world3);
-  let afterTrans3 = utils.multiplyMatrices(utils.MakeTranslateMatrix(-0.572156, 1.4528228, 0.0), world3)
+    var transx;
+    if(selectedTarget.mirror) {
+        transx = 0.56;
+    }
+    else {
+        transx = -0.572156;
+    }
+  let afterTrans3 = utils.multiplyMatrices(utils.MakeTranslateMatrix(transx, 1.4528228, 0.0), world3)
   piecesWorldMatrix[3] = utils.multiplyMatrices(
     utils.MakeWorld(selectedTarget.translations[3][0], selectedTarget.translations[3][1], selectedTarget.translations[3][2], 0.0, 0.0, selectedTarget.rotation[3], 1.0),
     afterTrans3)
