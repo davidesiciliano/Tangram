@@ -1,39 +1,46 @@
 async function loadModels() {
-  let piece1ObjStr = await utils.get_objstr(baseDir + modelStr[0]);
-  model[0] = new OBJ.Mesh(piece1ObjStr);
+  let piece1ObjStr = await utils.get_objstr(baseDir + piecesModelLocations[0]);
+  piecesModel[0] = new OBJ.Mesh(piece1ObjStr);
 
-  let piece2ObjStr = await utils.get_objstr(baseDir + modelStr[1]);
-  model[1] = new OBJ.Mesh(piece2ObjStr);
+  let piece2ObjStr = await utils.get_objstr(baseDir + piecesModelLocations[1]);
+  piecesModel[1] = new OBJ.Mesh(piece2ObjStr);
 
-  let piece3ObjStr = await utils.get_objstr(baseDir + modelStr[2]);
-  model[2] = new OBJ.Mesh(piece3ObjStr);
+  let piece3ObjStr = await utils.get_objstr(baseDir + piecesModelLocations[2]);
+  piecesModel[2] = new OBJ.Mesh(piece3ObjStr);
 
-  let piece4ObjStr = await utils.get_objstr(baseDir + modelStr[3]);
-  model[3] = new OBJ.Mesh(piece4ObjStr);
+  let piece4ObjStr = await utils.get_objstr(baseDir + piecesModelLocations[3]);
+  piecesModel[3] = new OBJ.Mesh(piece4ObjStr);
 
-  let piece5ObjStr = await utils.get_objstr(baseDir + modelStr[4]);
-  model[4] = new OBJ.Mesh(piece5ObjStr);
+  let piece5ObjStr = await utils.get_objstr(baseDir + piecesModelLocations[4]);
+  piecesModel[4] = new OBJ.Mesh(piece5ObjStr);
 
-  let piece6ObjStr = await utils.get_objstr(baseDir + modelStr[5]);
-  model[5] = new OBJ.Mesh(piece6ObjStr);
+  let piece6ObjStr = await utils.get_objstr(baseDir + piecesModelLocations[5]);
+  piecesModel[5] = new OBJ.Mesh(piece6ObjStr);
 
-  let piece7ObjStr = await utils.get_objstr(baseDir + modelStr[6]);
-  model[6] = new OBJ.Mesh(piece7ObjStr);
+  let piece7ObjStr = await utils.get_objstr(baseDir + piecesModelLocations[6]);
+  piecesModel[6] = new OBJ.Mesh(piece7ObjStr);
 
-  let trayObjStr = await utils.get_objstr(baseDir + modelStr[7]);
-  model[7] = new OBJ.Mesh(trayObjStr);
+  let trayObjStr = await utils.get_objstr(baseDir + piecesModelLocations[7]);
+  piecesModel[7] = new OBJ.Mesh(trayObjStr);
 
-  for (var i = 8; i < 15; i++) {
+  //Extracts the vertices, normals, indices and uv coords from the models we imported
+  for ( var i = 0; i < piecesModel.length; i++) {
+    piecesVertexPositionData[i] = piecesModel[i].vertices;
+    piecesNormalData[i] = piecesModel[i].vertexNormals;
+    piecesIndexData[i] = piecesModel[i].indices;
+  }
+
+  /*for (var i = 8; i < 15; i++) {
     model[i] = pieces[i - 8];
   }
 
   //Extracts the vertices, normals, indices and uv coords from the models we imported
-  for (i = 0; i < model.length; i++) {
+  for (i = 8; i < model.length; i++) {
     vertexPositionData[i] = model[i].vertices;
-    normalData[i] = model[i].vertexNormals;
+    normalData[i] = model[i].normals;
     indexData[i] = model[i].indices;
-    texCoords[i] = model[i].textures;
-  }
+    texCoords[i] = model[i].texture;
+  }*/
 }
 
 function initPositions() {
@@ -58,16 +65,16 @@ function initPositions() {
   for (i = 0; i < 8; i++) {
     piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
   }
-    
-  floorWorldMatrix = [0.0, 0.0, -2.0, 0.0, 0.0, 0.0, 0.3];
-  //endregione
+  piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0])); //todo: questo serve? viene usato solo qui
+  //endregion
 
-  piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0]));
+  floorWorldMatrix = [0.0, 0.0, -2.0, 0.0, 0.0, 0.0, 0.3];
+  
   floorNormalMatrix = utils.invertMatrix(utils.transposeMatrix(floorWorldMatrix));
 
   for (i = 8; i < 15; i++) {
     piecesWorldMatrix[i] = utils.identityMatrix();
-    if (selectedTarget.mirror && i == 11) {
+    if (selectedTarget.mirror && i === 11) {
       piecesWorldMatrix[i] = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
     }
 
@@ -163,33 +170,33 @@ function putAttributesOnGPU(gl, location, data, length) {
 }
 
 function createVAO(gl, shadersType) {
-    switch (shadersType) {
+  switch (shadersType) {
 
-    case ShadersType.item:
-      for (var i = 0; i < model.length; i++) {
+    case ShadersType.pieces:
+      for (var i = 0; i < piecesModel.length; i++) {
 
-        vaos[i] = gl.createVertexArray();
-        gl.bindVertexArray(vaos[i]);
+        piecesVaos[i] = gl.createVertexArray();
+        gl.bindVertexArray(piecesVaos[i]);
 
-        putAttributesOnGPU(gl, locationsArray[shadersType].positionAttributeLocation, model[i].vertices, 3);
+        putAttributesOnGPU(gl, locationsArray[shadersType].positionAttributeLocation, piecesVertexPositionData[i], 3);
 
-        putAttributesOnGPU(gl, locationsArray[shadersType].normalAttributeLocation, model[i].vertexNormals, 3);
+        putAttributesOnGPU(gl, locationsArray[shadersType].normalAttributeLocation, piecesNormalData[i], 3);
 
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(model[i].indices), gl.STATIC_DRAW);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(piecesModel[i].indices), gl.STATIC_DRAW);
       }
       break;
-          
+
     case ShadersType.floor:
-        floor.vao = gl.createVertexArray();
-        gl.bindVertexArray(floor.vao);
+      floor.vao = gl.createVertexArray();
+      gl.bindVertexArray(floor.vao);
 
-        putAttributesOnGPU(gl, locationsArray[shadersType].positionAttributeLocation, floor.vertices, 3);
+      putAttributesOnGPU(gl, locationsArray[shadersType].positionAttributeLocation, floor.vertices, 3);
 
-        putAttributesOnGPU(gl, locationsArray[shadersType].normalAttributeLocation, floor.normals, 3);
+      putAttributesOnGPU(gl, locationsArray[shadersType].normalAttributeLocation, floor.normals, 3);
 
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(floor.indices), gl.STATIC_DRAW);
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(floor.indices), gl.STATIC_DRAW);
       break;
 
     /*case ShadersType.SOLUTION:

@@ -3,20 +3,10 @@ var gl;
 var baseDir;
 var shaderDir;
 
+//region: pieces
 var piecesWorldMatrix = new Array();
 var piecesNormalMatrix = new Array();
-
-var floorWorldMatrix;
-var floorNormalMatrix;
-
-var vertexPositionData = new Array();
-var normalData = new Array();
-var indexData = new Array();
-var texCoords = new Array();
-
-var model = Array();
-
-let modelStr = [
+let piecesModelLocations = [
   'model/piece1.obj',
   'model/piece2.obj',
   'model/piece3.obj',
@@ -25,7 +15,30 @@ let modelStr = [
   'model/piece6.obj',
   'model/piece7.obj',
   'model/tray.obj'
-]
+];
+var piecesModel = new Array(); //contains model of pieces, and the last location is the tray
+
+var piecesVertexPositionData = new Array();
+var piecesNormalData = new Array();
+var piecesIndexData = new Array();
+var piecesVaos = new Array();
+//endregion
+
+//region: targetPieces
+//endregion
+
+//region: floor
+var floorWorldMatrix;
+var floorNormalMatrix;
+//endregion
+
+
+var vertexPositionData = new Array();
+var normalData = new Array();
+var indexData = new Array();
+var texCoords = new Array();
+
+var model = Array();
 
 var idSelectedTarget = 1;
 var selectedTarget = targets[idSelectedTarget];
@@ -41,7 +54,7 @@ var translate = utils.MakeWorld(-5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 var locationsArray = [];
 
 let ShadersType = {
-  item: 0,
+  pieces: 0,
   floor: 1
 };
 
@@ -56,15 +69,11 @@ var angle = 0.0;
 //endregion
 
 //region: LIGHTS
-//TODO: volendo si può mettere il colore dell' ambient light variabile
-var ambientLight = [0.1, 0.1, 0.1, 1.0];
-var ambientLightTop = [0.2, 0.2, 0.2, 1.0];
-var ambientLightBottom = [0.0, 0.0, 0.0, 1.0];
 var specularShine = 120.0;
 var specularColor = [1.0, 1.0, 1.0, 1.0];
 
 //material colour
-let piecesAmbientColor = [
+let piecesMaterialColor = [
   [0.0, 0.0, 1.0],
   [0.0, 1.0, 0.0],
   [1.0, 1.0, 0.0],
@@ -72,17 +81,10 @@ let piecesAmbientColor = [
   [1.0, 0.0, 0.0],
   [128.0 / 255, 0.0, 128.0 / 255],
   [1.0, 165.0 / 255, 0.0],
-  [1.0, 1.0, 1.0],
-  [0.0, 0.0, 0.0],
-  [0.0, 0.0, 0.0],
-  [0.0, 0.0, 0.0],
-  [0.0, 0.0, 0.0],
-  [0.0, 0.0, 0.0],
-  [0.0, 0.0, 0.0],
-  [0.0, 0.0, 0.0]
+  [1.0, 1.0, 1.0]
 ];
 
-let floorAmbientColor = [1.0, 0.0, 0.0];
+let floorMaterialColor = [1.0, 0.0, 0.0];
 
 // the light types are directionalLight, pointLight, spotLight, the fourth element is needed in order to have 4 elements
 // if light is active lightSwitch[n] = 1
