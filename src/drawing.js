@@ -5,6 +5,7 @@ function main() {
   var perspectiveMatrix = utils.MakePerspective(30, gl.canvas.width / gl.canvas.height, 0.1, 100.0);
 
   initializeProgram(gl, ShadersType.item);
+  initializeProgram(gl, ShadersType.floor);
   drawScene();
 
   function drawScene() {
@@ -50,6 +51,46 @@ function main() {
       gl.bindVertexArray(vaos[i]);
       gl.drawElements(gl.TRIANGLES, indexData[i].length, gl.UNSIGNED_SHORT, 0);
     }
+      
+    //drawing floor
+    gl.useProgram(programs[ShadersType.floor]);
+
+      let worldViewMatrix = utils.multiplyMatrices(viewMatrix, floorWorldMatrix);
+      let projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, worldViewMatrix);
+
+      let normalMatrix = utils.invertMatrix(utils.transposeMatrix(worldViewMatrix));
+      gl.uniformMatrix4fv(locationsArray[ShadersType.floor].matrixLocation, gl.FALSE, utils.transposeMatrix(projectionMatrix));
+      gl.uniformMatrix4fv(locationsArray[ShadersType.floor].normalMatrixPositionHandle, gl.FALSE, utils.transposeMatrix(normalMatrix));
+      gl.uniformMatrix4fv(locationsArray[ShadersType.floor].vertexMatrixPositionHandle, gl.FALSE, utils.transposeMatrix(worldViewMatrix));
+
+      //LIGHTS
+      gl.uniform4fv(locationsArray[ShadersType.floor].materialColorHandle, [floorAmbientColor[0], floorAmbientColor[1], floorAmbientColor[2], 1.0]);
+      gl.uniform4fv(locationsArray[ShadersType.floor].specularColorHandle, specularColor);
+      gl.uniform4fv(locationsArray[ShadersType.floor].lightSwitch, lightSwitch);
+      gl.uniform1f(locationsArray[ShadersType.floor].specShine, specularShine);
+
+      //Directional Light
+      gl.uniform3fv(locationsArray[ShadersType.floor].directionalLightDir, directionalLightDir);
+      gl.uniform4fv(locationsArray[ShadersType.floor].directionalLightCol, directionalLightColor);
+
+      //Point light
+      gl.uniform3fv(locationsArray[ShadersType.floor].pointLightPosition, pointLightPosition);
+      gl.uniform4fv(locationsArray[ShadersType.floor].pointLightColor, pointLightColor);
+      gl.uniform1f(locationsArray[ShadersType.floor].pointLightDecay, pointLightDecay);
+      gl.uniform1f(locationsArray[ShadersType.floor].pointLightTarget, pointLightTarget);
+
+      //Spot light
+      gl.uniform3fv(locationsArray[ShadersType.floor].spotLightPosition, spotLightPos);
+      gl.uniform4fv(locationsArray[ShadersType.floor].spotLightColor, spotLightColor);
+      gl.uniform3fv(locationsArray[ShadersType.floor].spotLightDir, spotLightDir);
+      gl.uniform1f(locationsArray[ShadersType.floor].spotLightConeOut, spotLightConeOut);
+      gl.uniform1f(locationsArray[ShadersType.floor].spotLightConeIn, spotLightConeIn);
+      gl.uniform1f(locationsArray[ShadersType.floor].spotLightTarget, spotLightTarget);
+      gl.uniform1f(locationsArray[ShadersType.floor].spotLightDecay, spotLightDecay);
+
+      gl.bindVertexArray(floor.vao);
+      gl.drawElements(gl.TRIANGLES, floor.indices.length, gl.UNSIGNED_SHORT, 0);
+      
 
     window.requestAnimationFrame(drawScene);
   }
@@ -82,6 +123,8 @@ async function init() {
     let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
 
     programs[0] = utils.createProgram(gl, vertexShader, fragmentShader);
+      
+      programs[1] = utils.createProgram(gl, vertexShader, fragmentShader);
   });
 
   /*await utils.loadFiles([shaderDir + 'vs_pos.glsl', shaderDir + 'fs_pos.glsl'], function (shaderText) {

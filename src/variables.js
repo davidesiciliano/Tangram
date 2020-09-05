@@ -6,6 +6,9 @@ var shaderDir;
 var piecesWorldMatrix = new Array();
 var piecesNormalMatrix = new Array();
 
+var floorWorldMatrix;
+var floorNormalMatrix;
+
 var vertexPositionData = new Array();
 var normalData = new Array();
 var indexData = new Array();
@@ -38,7 +41,8 @@ var translate = utils.MakeWorld(-5.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 var locationsArray = [];
 
 let ShadersType = {
-  item: 0
+  item: 0,
+  floor: 1
 };
 
 var vaos = new Array();
@@ -77,6 +81,8 @@ let piecesAmbientColor = [
   [0.0, 0.0, 0.0],
   [0.0, 0.0, 0.0]
 ];
+
+let floorAmbientColor = [1.0, 0.0, 0.0];
 
 // the light types are directionalLight, pointLight, spotLight, the fourth element is needed in order to have 4 elements
 // if light is active lightSwitch[n] = 1

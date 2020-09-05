@@ -58,9 +58,12 @@ function initPositions() {
   for (i = 0; i < 8; i++) {
     piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
   }
+    
+  floorWorldMatrix = [0.0, 0.0, -2.0, 0.0, 0.0, 0.0, 0.3];
   //endregione
 
   piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0]));
+  floorNormalMatrix = utils.invertMatrix(utils.transposeMatrix(floorWorldMatrix));
 
   for (i = 8; i < 15; i++) {
     piecesWorldMatrix[i] = utils.identityMatrix();
@@ -160,7 +163,7 @@ function putAttributesOnGPU(gl, location, data, length) {
 }
 
 function createVAO(gl, shadersType) {
-  switch (shadersType) {
+    switch (shadersType) {
 
     case ShadersType.item:
       for (var i = 0; i < model.length; i++) {
@@ -175,6 +178,18 @@ function createVAO(gl, shadersType) {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(model[i].indices), gl.STATIC_DRAW);
       }
+      break;
+          
+    case ShadersType.floor:
+        floor.vao = gl.createVertexArray();
+        gl.bindVertexArray(floor.vao);
+
+        putAttributesOnGPU(gl, locationsArray[shadersType].positionAttributeLocation, floor.vertices, 3);
+
+        putAttributesOnGPU(gl, locationsArray[shadersType].normalAttributeLocation, floor.normals, 3);
+
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, gl.createBuffer());
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(floor.indices), gl.STATIC_DRAW);
       break;
 
     /*case ShadersType.SOLUTION:
