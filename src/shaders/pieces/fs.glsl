@@ -61,7 +61,6 @@ void main() {
   // Spotlight
   vec3 lightPosC = LCPos;
   vec3 lightDirC = normalize(lightPosC - fsPosition);
-  lightDirC = lightDirC;
 
   vec4 lightColC = LCCol*pow((LCTarget/length(lightPosC - fsPosition)),LCDecay) * clamp(( dot( normalize(lightPosC - fsPosition), LCDir) - cos(radians(LCConeOut/2.0)) ) / (cos(radians(LCConeIn/2.0)) - cos(radians(LCConeOut/2.0)) ), 0.0, 1.0);
 

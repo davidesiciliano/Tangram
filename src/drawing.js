@@ -2,58 +2,8 @@ function main() {
 
   initPositions();
 
-  var perspectiveMatrix = utils.MakePerspective(30, gl.canvas.width / gl.canvas.height, 0.1, 100.0);
-
-  initializeProgram(gl, ShadersType.item);
-  drawScene();
-
-  function drawScene() {
-    var viewMatrix = utils.MakeView(cx, cy, cz, elevation, angle);
-
-    for (i = 0; i < model.length; i++) {
-      gl.useProgram(programs[ShadersType.item]);
-
-      let worldViewMatrix = utils.multiplyMatrices(viewMatrix, piecesWorldMatrix[i]);
-      let projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, worldViewMatrix);
-
-      let normalMatrix = utils.invertMatrix(utils.transposeMatrix(worldViewMatrix));
-
-      gl.uniformMatrix4fv(locationsArray[ShadersType.item].matrixLocation, gl.FALSE, utils.transposeMatrix(projectionMatrix));
-      gl.uniformMatrix4fv(locationsArray[ShadersType.item].normalMatrixPositionHandle, gl.FALSE, utils.transposeMatrix(normalMatrix));
-      gl.uniformMatrix4fv(locationsArray[ShadersType.item].vertexMatrixPositionHandle, gl.FALSE, utils.transposeMatrix(worldViewMatrix));
-
-      //LIGHTS
-      gl.uniform4fv(locationsArray[ShadersType.item].materialColorHandle, [piecesAmbientColor[i][0], piecesAmbientColor[i][1], piecesAmbientColor[i][2], 1.0]);
-      gl.uniform4fv(locationsArray[ShadersType.item].specularColorHandle, specularColor);
-      gl.uniform4fv(locationsArray[ShadersType.item].lightSwitch, lightSwitch);
-      gl.uniform1f(locationsArray[ShadersType.item].specShine, specularShine);
-
-      //Directional Light
-      gl.uniform3fv(locationsArray[ShadersType.item].directionalLightDir, directionalLightDir);
-      gl.uniform4fv(locationsArray[ShadersType.item].directionalLightCol, directionalLightColor);
-
-      //Point light
-      gl.uniform3fv(locationsArray[ShadersType.item].pointLightPosition, pointLightPosition);
-      gl.uniform4fv(locationsArray[ShadersType.item].pointLightColor, pointLightColor);
-      gl.uniform1f(locationsArray[ShadersType.item].pointLightDecay, pointLightDecay);
-      gl.uniform1f(locationsArray[ShadersType.item].pointLightTarget, pointLightTarget);
-
-      //Spot light
-      gl.uniform3fv(locationsArray[ShadersType.item].spotLightPosition, spotLightPos);
-      gl.uniform4fv(locationsArray[ShadersType.item].spotLightColor, spotLightColor);
-      gl.uniform3fv(locationsArray[ShadersType.item].spotLightDir, spotLightDir);
-      gl.uniform1f(locationsArray[ShadersType.item].spotLightConeOut, spotLightConeOut);
-      gl.uniform1f(locationsArray[ShadersType.item].spotLightConeIn, spotLightConeIn);
-      gl.uniform1f(locationsArray[ShadersType.item].spotLightTarget, spotLightTarget);
-      gl.uniform1f(locationsArray[ShadersType.item].spotLightDecay, spotLightDecay);
-
-      gl.bindVertexArray(vaos[i]);
-      gl.drawElements(gl.TRIANGLES, indexData[i].length, gl.UNSIGNED_SHORT, 0);
-    }
-
-    window.requestAnimationFrame(drawScene);
-  }
-
+  drawPieces();
+  drawFloor()
 }
 
 async function init() {
@@ -81,22 +31,15 @@ async function init() {
     let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
     let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
 
-    programs[0] = utils.createProgram(gl, vertexShader, fragmentShader);
+    programs[ShadersType.pieces] = utils.createProgram(gl, vertexShader, fragmentShader);
   });
 
-  /*await utils.loadFiles([shaderDir + 'vs_pos.glsl', shaderDir + 'fs_pos.glsl'], function (shaderText) {
+  await utils.loadFiles([shaderDir + 'floor/vs.glsl', shaderDir + 'floor/fs.glsl'], function (shaderText) {
     let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
     let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
 
-    programsArray[1] = utils.createProgram(gl, vertexShader, fragmentShader);
+    programs[ShadersType.floor] = utils.createProgram(gl, vertexShader, fragmentShader);
   });
-
-  await utils.loadFiles([shaderDir + 'vs_unlit.glsl', shaderDir + 'fs_unlit.glsl'], function (shaderText) {
-    let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
-    let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
-
-    programsArray[2] = utils.createProgram(gl, vertexShader, fragmentShader);
-  });*/
 
   await loadModels();
 
