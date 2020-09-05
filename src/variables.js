@@ -24,7 +24,7 @@ let modelStr = [
   'model/tray.obj'
 ]
 
-var idSelectedTarget = 1;
+var idSelectedTarget = 0;
 var selectedTarget = targets[idSelectedTarget];
 
 var userHasSurrendered = false;

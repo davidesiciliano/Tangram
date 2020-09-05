@@ -1,26 +1,19 @@
 (function () {
 
   var selectShape = document.getElementById("selectShape");
-  var optionToInsert = document.createElement("option");
-  optionToInsert.setAttribute("value", "");
-  optionToInsert.setAttribute("disabled", "");
-  optionToInsert.setAttribute("selected", "");
-  optionToInsert.setAttribute("hidden", "");
-  optionToInsert.innerText = selectedTarget.name;
-  selectShape.appendChild(optionToInsert);
+  selectShape.innerText = selectedTarget.name;
+  selectShape.onchange = function () {
+    idSelectedTarget = e.target.getAttribute("value");
+    selectedTarget = targets[idSelectedTarget];
+    userHasSurrendered = false;
+    initPositions();
+  }
   for (var i = 0; i < targets.length; i++) {
-    optionToInsert = document.createElement("option");
+    var optionToInsert = document.createElement("option");
     optionToInsert.setAttribute("value", i);
     optionToInsert.innerText = targets[i].name;
-    optionToInsert.addEventListener("click", (e) => {
-      idSelectedTarget = e.target.getAttribute("value");
-      selectedTarget = targets[idSelectedTarget];
-      userHasSurrendered = false;
-      initPositions();
-    });
     selectShape.appendChild(optionToInsert);
   }
-
 
   function hexToRgb(hex) {
     var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
