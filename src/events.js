@@ -3,7 +3,7 @@
   var selectShape = document.getElementById("selectShape");
   selectShape.innerText = selectedTarget.name;
   selectShape.onchange = function () {
-    idSelectedTarget = e.target.getAttribute("value");
+    idSelectedTarget = document.getElementById("selectShape").value;
     selectedTarget = targets[idSelectedTarget];
     userHasSurrendered = false;
     initPositions();

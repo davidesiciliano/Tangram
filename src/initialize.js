@@ -39,19 +39,19 @@ async function loadModels() {
 function initPositions() {
   //region: creates world matrices for initial position of pieces
   //first big triangle
-  piecesWorldMatrix[0] = utils.MakeWorld(-0.95, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrix[0] = utils.MakeWorld(-1.019658, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
   //middle triangle
-  piecesWorldMatrix[1] = utils.MakeWorld(1.5, -1.35, -0.10, 90.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrix[1] = utils.MakeWorld(1.43125, -1.346947, -0.10, 90.0, 90.0, 0.0, 1.0);
   //first small triangle
   piecesWorldMatrix[2] = utils.MakeWorld(0.58, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
   //trapezoid
   piecesWorldMatrix[3] = utils.MakeWorld(1.6, 0.55, -0.10, 0.0, 90.0, 0.0, 1.0);
   //square
-  piecesWorldMatrix[4] = utils.MakeWorld(0.02, -0.88, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrix[4] = utils.MakeWorld(-0.016485, -0.875, -0.10, 0.0, 90.0, 0.0, 1.0);
   //second small triangle
-  piecesWorldMatrix[5] = utils.MakeWorld(-1, -1.5, -0.10, 180.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrix[5] = utils.MakeWorld(-1.019658, -1.498514, -0.10, 180.0, 90.0, 0.0, 1.0);
   //second big triangle
-  piecesWorldMatrix[6] = utils.MakeWorld(0.0, 1.2, -0.10, 180.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrix[6] = utils.MakeWorld(-0.019658, 1.216299, -0.10, 180.0, 90.0, 0.0, 1.0);
   //tray - positioned
   piecesWorldMatrix[7] = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
 
