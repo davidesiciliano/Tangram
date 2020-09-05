@@ -2,16 +2,19 @@ body {
   margin: 0;
   background-color: gray;
 }
-#container{
+
+#container {
   position: relative;
 }
-#c{
+
+#c {
   position: absolute;
   left: 0;
   margin-top: 155px;
   z-index: 0;
 }
-#overlay{
+
+#overlay {
   position: absolute;
   pointer-events: none;
   left: 0;
@@ -79,7 +82,7 @@ body {
   text-shadow: 1px 1px black;
 }
 
-.my-navbar-buttons-box{
+.my-navbar-buttons-box {
   width: 30%;
 }
 
@@ -116,10 +119,12 @@ body {
   .my-navbar {
     display: none;
   }
-  #c{
+
+  #c {
     margin-top: 0;
   }
-  #overlay{
+
+  #overlay {
     margin-top: 0;
   }
 }

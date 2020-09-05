@@ -58,19 +58,48 @@ function initPositions() {
   for (i = 0; i < 8; i++) {
     piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
   }
-  //endregione
+  //endregion
 
   piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0]));
 
   for (i = 8; i < 15; i++) {
     piecesWorldMatrix[i] = utils.identityMatrix();
-    if (selectedTarget.mirror && i == 11) {
+    if (selectedTarget.mirror && i === 11) {
       piecesWorldMatrix[i] = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
     }
-
-    var world = utils.MakeWorld(selectedTarget.translations[i - 8][0], selectedTarget.translations[i - 8][1], selectedTarget.translations[i - 8][2], 0.0, 0.0, selectedTarget.rotation[i - 8], 1.0);
+    let world = utils.MakeWorld(
+      selectedTarget.translations[i - 8][0],
+      selectedTarget.translations[i - 8][1],
+      selectedTarget.translations[i - 8][2],
+      0.0,
+      0.0,
+      selectedTarget.rotation[i - 8],
+      1.0);
     piecesWorldMatrix[i] = utils.multiplyMatrices(world, piecesWorldMatrix[i]);
   }
+  /*piecesWorldMatrix[9] = utils.MakeWorld(
+    0,
+    0,
+    0,
+    0.0,
+    0.0,
+    -90.0,
+    1.0);*/
+}
+
+function piecesInSolutionPosition() {
+  let world0 = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
+  let afterTrans0 = utils.multiplyMatrices(utils.MakeTranslateMatrix(1.0, 2.0, 0.0), world0)
+  piecesWorldMatrix[0] = utils.multiplyMatrices(
+    utils.MakeWorld(selectedTarget.translations[0][0], selectedTarget.translations[0][1], selectedTarget.translations[0][2], 0.0, 0.0, selectedTarget.rotation[0], 1.0),
+    afterTrans0)
+
+  let world1 = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0); //rx va 90.0
+  let afterTrans1 = utils.multiplyMatrices(utils.MakeTranslateMatrix(-0.545730, 1.454270, 0.0), world1)
+  piecesWorldMatrix[1] = utils.multiplyMatrices(
+    utils.MakeWorld(selectedTarget.translations[1][0], selectedTarget.translations[1][1], selectedTarget.translations[1][2], 0.0, 0.0, selectedTarget.rotation[1], 1.0),
+    afterTrans1)
+  //piecesWorldMatrix[1] = afterTrans1
 }
 
 /* Inizializza il program (identificato da shadersType), creando per quel program l'array (globale)

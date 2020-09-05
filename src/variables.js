@@ -27,6 +27,8 @@ let modelStr = [
 var idSelectedTarget = 1;
 var selectedTarget = targets[idSelectedTarget];
 
+var userHasSurrendered = false;
+
 var horizontalMirror = [
   -1.0, 0.0, 0.0, 0.0,
   0.0, 1.0, 0.0, 0.0,

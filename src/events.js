@@ -13,10 +13,9 @@
     optionToInsert.setAttribute("value", i);
     optionToInsert.innerText = targets[i].name;
     optionToInsert.addEventListener("click", (e) => {
-
       idSelectedTarget = e.target.getAttribute("value");
       selectedTarget = targets[idSelectedTarget];
-      //isSurrendered = false;
+      userHasSurrendered = false;
       initPositions();
     });
     selectShape.appendChild(optionToInsert);
@@ -35,8 +34,7 @@
   document.getElementById("dirLightEnable").addEventListener("change", () => {
     if (document.getElementById("dirLightEnable").checked) {
       lightSwitch[0] = 1;
-    }
-    else {
+    } else {
       lightSwitch[0] = 0;
     }
   });
@@ -44,8 +42,7 @@
   document.getElementById("pointLightEnable").addEventListener("change", () => {
     if (document.getElementById("pointLightEnable").checked) {
       lightSwitch[1] = 1;
-    }
-    else {
+    } else {
       lightSwitch[1] = 0;
     }
   });
@@ -53,8 +50,7 @@
   document.getElementById("spotLightEnable").addEventListener("change", () => {
     if (document.getElementById("spotLightEnable").checked) {
       lightSwitch[2] = 1;
-    }
-    else {
+    } else {
       lightSwitch[2] = 0;
     }
   });
@@ -62,7 +58,7 @@
   document.getElementById("dirSlider1").addEventListener("input", (e) => {
     dirLightAlpha = utils.degToRad(e.target.value * 90);
     directionalLightDir = [
-      Math.cos(dirLightAlpha)*Math.cos(dirLightBeta),
+      Math.cos(dirLightAlpha) * Math.cos(dirLightBeta),
       Math.sin(dirLightAlpha),
       Math.cos(dirLightAlpha) * Math.sin(dirLightBeta)
     ];
@@ -71,7 +67,7 @@
   document.getElementById("dirSlider2").addEventListener("input", (e) => {
     dirLightBeta = utils.degToRad(e.target.value * 360);
     directionalLightDir = [
-      Math.cos(dirLightAlpha)*Math.cos(dirLightBeta),
+      Math.cos(dirLightAlpha) * Math.cos(dirLightBeta),
       Math.sin(dirLightAlpha),
       Math.cos(dirLightAlpha) * Math.sin(dirLightBeta)
     ];
@@ -139,18 +135,19 @@
   });
 
   document.getElementById("resetBtn").addEventListener("click", () => {
-    isSurrendered = false;
-    if (selectedItem >= 0 && selectedItem < 7) {
-      assetsData[selectedItem].drawInfo.worldParams[2] -= 0.1;
-      selectedItem = -1;
-    }
-    initPosition();
+    console.log("PRESS RESET BUTTON")
+    userHasSurrendered = false;
+    //todo: settare elemento selezionato a null (o valore iniziale)
+    initPositions();
   });
 
   document.getElementById("surrenderBtn").addEventListener("click", () => {
-    if (!isSurrendered) {
-      isSurrendered = true;
+    console.log("PRESS SURRENDER BUTTON")
+    if (!userHasSurrendered) {
+      userHasSurrendered = true;
+      piecesInSolutionPosition();
     }
+
   });
 
 })();
