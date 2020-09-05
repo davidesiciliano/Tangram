@@ -40,18 +40,25 @@ function initPositions() {
   //region: creates world matrices for initial position of pieces
   //first big triangle
   piecesWorldMatrix[0] = utils.MakeWorld(-0.95, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[0] = [-0.95, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0];
   //middle triangle
   piecesWorldMatrix[1] = utils.MakeWorld(1.5, -1.35, -0.10, 90.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[1] = [1.5, -1.35, -0.10, 90.0, 90.0, 0.0, 1.0];
   //first small triangle
   piecesWorldMatrix[2] = utils.MakeWorld(0.58, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[2] = [0.58, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0];
   //trapezoid
   piecesWorldMatrix[3] = utils.MakeWorld(1.6, 0.55, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[3] = [1.6, 0.55, -0.10, 0.0, 90.0, 0.0, 1.0];
   //square
   piecesWorldMatrix[4] = utils.MakeWorld(0.05, -0.9, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[4] = [0.05, -0.9, -0.10, 0.0, 90.0, 0.0, 1.0];
   //second small triangle
   piecesWorldMatrix[5] = utils.MakeWorld(-1, -1.5, -0.10, 180.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[5] = [-1, -1.5, -0.10, 180.0, 90.0, 0.0, 1.0];
   //second big triangle
   piecesWorldMatrix[6] = utils.MakeWorld(0.0, 1.2, -0.10, 180.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[6] = [0.0, 1.2, -0.10, 180.0, 90.0, 0.0, 1.0];
   //tray - positioned
   piecesWorldMatrix[7] = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
 

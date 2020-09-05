@@ -2,8 +2,10 @@ var programs = new Array();
 var gl;
 var baseDir;
 var shaderDir;
+var canvas;
 
 var piecesWorldMatrix = new Array();
+var piecesWorldMatrixParams = new Array();
 var piecesNormalMatrix = new Array();
 
 var vertexPositionData = new Array();
