@@ -1,8 +1,9 @@
 function main() {
 
   initPositions();
-  drawPieces();
 
+  drawPieces();
+  drawFloor()
 }
 
 async function init() {
@@ -30,19 +31,17 @@ async function init() {
     let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
     let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
 
-    programs[0] = utils.createProgram(gl, vertexShader, fragmentShader);
-      
-      programs[1] = utils.createProgram(gl, vertexShader, fragmentShader);
+    programs[ShadersType.pieces] = utils.createProgram(gl, vertexShader, fragmentShader);
   });
 
-  /*await utils.loadFiles([shaderDir + 'vs_pos.glsl', shaderDir + 'fs_pos.glsl'], function (shaderText) {
+  await utils.loadFiles([shaderDir + 'floor/vs.glsl', shaderDir + 'floor/fs.glsl'], function (shaderText) {
     let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
     let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
 
-    programsArray[1] = utils.createProgram(gl, vertexShader, fragmentShader);
+    programs[ShadersType.floor] = utils.createProgram(gl, vertexShader, fragmentShader);
   });
 
-  await utils.loadFiles([shaderDir + 'vs_unlit.glsl', shaderDir + 'fs_unlit.glsl'], function (shaderText) {
+  /*await utils.loadFiles([shaderDir + 'vs_unlit.glsl', shaderDir + 'fs_unlit.glsl'], function (shaderText) {
     let vertexShader = utils.createShader(gl, gl.VERTEX_SHADER, shaderText[0]);
     let fragmentShader = utils.createShader(gl, gl.FRAGMENT_SHADER, shaderText[1]);
 

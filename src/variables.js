@@ -55,7 +55,8 @@ var locationsArray = [];
 
 let ShadersType = {
   pieces: 0,
-  floor: 1
+  floor: 1,
+  targetPieces: 2
 };
 
 var vaos = new Array();
