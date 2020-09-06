@@ -65,7 +65,7 @@ function initPositions() {
   //endregion
 
   //region: floor
-  floorWorldMatrix = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.7);
+  floorWorldMatrix = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 2);
   floorNormalMatrix = utils.invertMatrix(utils.transposeMatrix(floorWorldMatrix));
   //endregion
 
@@ -308,15 +308,16 @@ function createTexture(gl) {
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, floor.texture);
   var image = new Image();
-  image.src = "model/wood_texture.png"; //todo change texture
+  image.src = "model/WoodFine0051_2_500.jpg"; //todo change texture
   image.onload = function () {
     gl.bindTexture(gl.TEXTURE_2D, floor.texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
 
     gl.generateMipmap(gl.TEXTURE_2D);
   }
+  image.crossOrigin = "anonymous";
 }
