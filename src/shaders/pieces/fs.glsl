@@ -31,6 +31,9 @@ uniform float LCTarget;
 
 uniform float SpecShine;
 
+uniform float selection;
+uniform float index;
+
 out vec4 outColor;
 
 vec4 diffuseLambert(vec3 lightDir, vec4 lightCol, vec3 normalVec, vec4 diffColor) {
@@ -45,6 +48,8 @@ vec4 specularPhong(vec3 lightDir, vec4 lightCol, vec3 normalVec, vec3 eyedirVec)
 }
 
 void main() {
+
+
 
   vec3 nNormal = normalize(fsNormal);
   vec3 nEyeDirection = normalize ((0.0, 0.0, 0.0) - fsPosition);
@@ -63,7 +68,7 @@ void main() {
   vec3 lightDirC = normalize(lightPosC - fsPosition);
   lightDirC = lightDirC;
 
-  vec4 lightColC = LCCol*pow((LCTarget/length(lightPosC - fsPosition)),LCDecay) * clamp(( dot( normalize(lightPosC - fsPosition), LCDir) - cos(radians(LCConeOut/2.0)) ) / (cos(radians(LCConeIn/2.0)) - cos(radians(LCConeOut/2.0)) ), 0.0, 1.0);
+  vec4 lightColC = LCCol*pow((LCTarget/length(lightPosC - fsPosition)), LCDecay) * clamp((dot(normalize(lightPosC - fsPosition), LCDir) - cos(radians(LCConeOut/2.0))) / (cos(radians(LCConeIn/2.0)) - cos(radians(LCConeOut/2.0))), 0.0, 1.0);
 
   vec4 LADiffuse = diffuseLambert(lightDirA, lightColA, nNormal, materialColor);
   vec4 LBDiffuse = diffuseLambert(lightDirB, lightColB, nNormal, materialColor);
@@ -79,5 +84,10 @@ void main() {
   vec4 specular = LASpecular * lightSwitch.x + LBSpecular * lightSwitch.y + LCSpecular * lightSwitch.z;
 
   vec4 out_color = clamp(diffuse + specular, 0.0, 1.0);
-  outColor = vec4(out_color.rgb, 1.0);
+   vec4 prova = vec4(out_color.rgb, 1.0);
+
+  if (selection == 2.) {
+    prova = vec4(index, out_color.g,out_color.b, 1.);
+  }
+  outColor = prova;
 }

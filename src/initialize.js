@@ -63,7 +63,7 @@ function initPositions() {
   piecesWorldMatrix[7] = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
 
   for (i = 0; i < 8; i++) {
-    piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
+    // piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
   }
   //endregione
 
@@ -123,6 +123,9 @@ function getAttributeAndUniformLocation(gl, shadersType) {
   var spotLightDecay = gl.getUniformLocation(programs[shadersType], 'LCDecay');
   var spotLightTarget = gl.getUniformLocation(programs[shadersType], 'LCTarget');
 
+  var selection = gl.getUniformLocation(programs[shadersType], 'selection');
+  var index = gl.getUniformLocation(programs[shadersType], 'index');
+
   locationsArray[shadersType] = {
     "positionAttributeLocation": positionAttributeLocation,
     "normalAttributeLocation": normalAttributeLocation,
@@ -154,7 +157,10 @@ function getAttributeAndUniformLocation(gl, shadersType) {
     "spotLightTarget": spotLightTarget,
 
     "normalMatrixPositionHandle": normalMatrixPositionHandle,
-    "vertexMatrixPositionHandle": vertexMatrixPositionHandle
+    "vertexMatrixPositionHandle": vertexMatrixPositionHandle,
+
+    "selection": selection,
+    "index": index,
   }
 }
 
