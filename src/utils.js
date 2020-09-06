@@ -52,16 +52,16 @@ createProgram:function(gl, vertexShader, fragmentShader) {
   }
 },
 
- resizeCanvasToDisplaySize:function(canvas) {
-    const expandFullScreen = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      console.log(canvas.width+" "+window.innerWidth);
-        
-    };
-    expandFullScreen();
-    // Resize screen when the browser has triggered the resize event
-    window.addEventListener('resize', expandFullScreen);
+resizeCanvasToDisplaySize:function(canvas) {
+	const expandFullScreen = () => {
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight - 155;
+		console.log(canvas.width+" "+window.innerWidth);
+
+	};
+	expandFullScreen();
+	// Resize screen when the browser has triggered the resize event
+	window.addEventListener('resize', expandFullScreen);
 },
 //**** MODEL UTILS
 	// Function to load a 3D model in JSON format

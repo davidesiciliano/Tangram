@@ -65,7 +65,7 @@ function initPositions() {
   //endregion
 
   //region: floor
-  floorWorldMatrix = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.5);
+  floorWorldMatrix = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.7);
   floorNormalMatrix = utils.invertMatrix(utils.transposeMatrix(floorWorldMatrix));
   //endregion
 
