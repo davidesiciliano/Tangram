@@ -39,22 +39,47 @@
     Decay<br/>
     <input id="spotSlider5" class="range" type="range" min="0" max="1" step="0.025" value="0.5"><br/>
   </div>
-  <div class="my-navbar-section">
+  <div class="my-navbar-sectionLight">
     <h4>Light Colors</h4>
     <input type="color" id="dirColor" value="#fdffff"> Directional<br/>
     <input type="color" id="pointColor" value="#fdffff"> Point<br/>
     <input type="color" id="spotColor" value="#fdffff"> Spot<br/>
   </div>
-  <div class="my-navbar-section">
-    <h4 id="checkBtn" class="my-navbar-btn">Check</h4>
-    <h4 id="resetBtn" class="my-navbar-btn">Reset</h4>
-    <h4 id="surrenderBtn" class="my-navbar-btn">Surrender</h4>
-    <select id="selectShape" class="my-navbar-select-btn"></select>
+  <div class="my-navbar-sectionButton">
+    <a id="checkBtn" class="button">Check</a>
+    <a id="resetBtn" class="button">Reset</a>
+    <a id="surrenderBtn" class="button">Surrender</a>
   </div>
 </div>
 
 <div id="container">
   <canvas id="c"></canvas>
+</div>
+
+<div class="my-navbar-bottom">
+  <div class="my-navbar-section">
+    Alpha<br/>
+    Beta<br/>
+  </div>
+  <div class="my-navbar-section">
+    Pos. x<br/>
+    Pos. y<br/>
+  </div>
+  <div class="my-navbar-section">
+    Theta<br/>
+    Phi<br/>
+  </div>
+  <div class="my-navbar-section">
+    Cone In<br/>
+    Cone Out<br/>
+    Decay<br/>
+  </div>
+  <div class="my-navbar-sectionLight">
+    <h4>Light Colors</h4>
+  </div>
+  <div class="my-navbar-sectionSelectShape">
+    <select id="selectShape" class="my-navbar-select-btn"></select>
+  </div>
 </div>
 </body>
 
