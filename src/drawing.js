@@ -108,11 +108,11 @@ var didPressKey = function (e) {
 
 //updates position of object into objectOrientation[objectIndex] = {x, y, angle}
 //then stores the WorldMatrix into objectWorldMatrix[objectIndex] = MakeWorld(newX, newY, 0.0, 0.0, 0.0, newAngle, objectsInitialScale)
-function movePiece(pieceIndex, newX, newY, newAngle) {
-
-    //todo
-  piecesWorldMatrix[0] = utils.MakeWorld()
-}
+//function movePiece(pieceIndex, newX, newY, newAngle) {
+//
+//    //todo
+//  piecesWorldMatrix[0] = utils.MakeWorld()
+//}
 
 function getWorldMatrixValues(pieceIndex) {
   var worldMatrix = createPieceWorldMatrix(pieceIndex)
