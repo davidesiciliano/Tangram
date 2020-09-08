@@ -42,6 +42,7 @@ async function loadModels() {
 function initPositions() {
   //region: creates world matrices for initial position of pieces
   //first big triangle
+
   piecesWorldMatrix[0] = utils.MakeWorld(-1.019658, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
   //middle triangle
   piecesWorldMatrix[1] = utils.MakeWorld(1.43125, -1.346947, -0.10, 90.0, 90.0, 0.0, 1.0);
@@ -55,11 +56,27 @@ function initPositions() {
   piecesWorldMatrix[5] = utils.MakeWorld(-1.019658, -1.498514, -0.10, 180.0, 90.0, 0.0, 1.0);
   //second big triangle
   piecesWorldMatrix[6] = utils.MakeWorld(-0.019658, 1.216299, -0.10, 180.0, 90.0, 0.0, 1.0);
+    
+  piecesWorldMatrixParams[0] = [-1.019658, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0];
+  //middle triangle
+  piecesWorldMatrixParams[1] = [1.43125, -1.346947, -0.10, 90.0, 90.0, 0.0, 1.0];
+  //first small triangle
+  piecesWorldMatrixParams[2] = [0.532533, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0];
+  //trapezoid
+  piecesWorldMatrixParams[3] = [1.549651, 0.519417, -0.10, 0.0, 90.0, 0.0, 1.0];
+  //square
+  piecesWorldMatrixParams[4] = [-0.016485, -0.875, -0.10, 0.0, 90.0, 0.0, 1.0];
+  //second small triangle
+  piecesWorldMatrixParams[5] = [-1.019658, -1.498514, -0.10, 180.0, 90.0, 0.0, 1.0];
+  //second big triangle
+  piecesWorldMatrixParams[6] = [-0.019658, 1.216299, -0.10, 180.0, 90.0, 0.0, 1.0];
+    
+    
   //tray - positioned
   piecesWorldMatrix[7] = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
 
   for (i = 0; i < 8; i++) {
-    piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
+    // piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
   }
   piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0])); //todo: questo serve? viene usato solo qui
   //endregion
@@ -140,6 +157,12 @@ function getAttributeAndUniformLocation(gl, shadersType) {
   var spotLightDecay = gl.getUniformLocation(programs[shadersType], 'LCDecay');
   var spotLightTarget = gl.getUniformLocation(programs[shadersType], 'LCTarget');
 
+    
+  var selection = gl.getUniformLocation(programs[shadersType], 'selection');
+  var index = gl.getUniformLocation(programs[shadersType], 'index');
+
+    
+    
   if (shadersType === ShadersType.pieces) {
     locationsArray[shadersType] = {
       "positionAttributeLocation": positionAttributeLocation,
@@ -172,7 +195,10 @@ function getAttributeAndUniformLocation(gl, shadersType) {
       "spotLightTarget": spotLightTarget,
 
       "normalMatrixPositionHandle": normalMatrixPositionHandle,
-      "vertexMatrixPositionHandle": vertexMatrixPositionHandle
+      "vertexMatrixPositionHandle": vertexMatrixPositionHandle,
+        
+    "selection": selection,
+    "index": index
     };
     return;
   }

@@ -49,6 +49,9 @@ function drawFloor() {
     gl.bindVertexArray(floor.vao);
     gl.drawElements(gl.TRIANGLES, floor.indices.length, gl.UNSIGNED_SHORT, 0);
 
+      if (mouseClicked != 2.0) {
     window.requestAnimationFrame(drawSceneFloor);
+      
   }
+}
 }

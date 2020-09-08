@@ -39,6 +39,7 @@ function checkSolution(selectedTarget) {
         translations[i] = [
             piecesWorldMatrix[i][3], piecesWorldMatrix[i][7], piecesWorldMatrix[i][11]
         ]
+        
     }
     
     console.log(translations)

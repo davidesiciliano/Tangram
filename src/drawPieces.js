@@ -48,6 +48,7 @@ function drawPieces() {
       gl.drawElements(gl.TRIANGLES, piecesIndexData[i].length, gl.UNSIGNED_SHORT, 0);
     }
 
+    if (mouseClicked != 2.0) {
     window.requestAnimationFrame(drawScenePieces);
   }
-}
+}}

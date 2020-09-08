@@ -2,9 +2,11 @@ var programs = new Array();
 var gl;
 var baseDir;
 var shaderDir;
+var canvas;
 
 //region: pieces
 var piecesWorldMatrix = new Array();
+var piecesWorldMatrixParams = new Array();
 var piecesNormalMatrix = new Array();
 let piecesModelLocations = [
   'model/piece1.obj',
