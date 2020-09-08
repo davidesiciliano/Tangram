@@ -308,7 +308,7 @@ function createTexture(gl) {
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, floor.texture);
   var image = new Image();
-  image.src = "model/WoodFine0051_2_500.jpg"; //todo change texture
+  image.src = "textures/WoodFine0051_2_500.jpg";
   image.onload = function () {
     gl.bindTexture(gl.TEXTURE_2D, floor.texture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);

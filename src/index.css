@@ -138,6 +138,10 @@ body {
   margin-top: 10px;
 }
 
+p, ul {
+  margin:0;
+}
+
 .my-navbar-sectionSelectShape {
   float: left;
   width: 14vw;
@@ -300,18 +304,14 @@ h1 {
 
 a.button {
   display: inline-block;
-
   font: normal normal 300 1.1em 'Poppins', sans-serif;
   text-decoration: none;
-
   color: #ffffff;
   brackground-color: transparent;
   border: 1px solid #ffffff;
   border-radius: 100px;
-
   padding: .3em 1.2em;
   margin: 5px;
-
   background-size: 200% 100%;
   background-image: linear-gradient(to right, transparent 50%, #2c3e50 50%);
   transition: background-position .3s cubic-bezier(0.19, 1, 0.22, 1) .1s, color .5s ease 0s, background-color .5s ease;
