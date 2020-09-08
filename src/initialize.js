@@ -3,6 +3,15 @@ function createPieceWorldMatrix(index) {
     return utils.MakeWorld(param[0], param[1], param[2], param[3], param[4], param[5], param[6])
 }
 
+function extractAnglesFromMatrix(matrix) {
+    var angles = Array();
+    angles[0] = Math.atan2(matrix[9], matrix[10]) * 180/Math.PI;
+    angles[1] = Math.atan2(-matrix[8], Math.sqrt(Math.pow(matrix[9], 2) + Math.pow(matrix[10], 2))) * 180/Math.PI;
+    angles[2] = Math.atan2(matrix[4], matrix[0]) * 180/Math.PI;
+    
+    return angles;
+}
+
 async function loadModels() {
   let piece1ObjStr = await utils.get_objstr(baseDir + piecesModelLocations[0]);
   piecesModel[0] = new OBJ.Mesh(piece1ObjStr);
@@ -93,19 +102,22 @@ function initPositions() {
 function piecesInSolutionPosition() {
     var piecesWorldMatrix = Array();
     var i;
+    var rotation = Array();
+    var translations = Array();
     for (i = 0; i < 7; i++) {
         piecesWorldMatrix[i] = solutionMatrix(i);
-    }   
-    //TODO da piecesworldmatrix a parametri
-    var translations = Array();
-    for(i = 0; i < 7; i++) {
         translations[i] = [piecesWorldMatrix[i][3], piecesWorldMatrix[i][7], piecesWorldMatrix[i][11]];
+        rotation[i] = extractAnglesFromMatrix(solutionMatrix(i));
+    
+    
+    piecesWorldMatrixParams[i] = [translations[i][0], translations[i][1], translations[i][2], -rotation[i][2], rotation[i][0], -rotation[i][1], 1.0];
+    
     }
     
-    var rotation = Array(); 
+    if(!selectedTarget.mirror) {
+            piecesWorldMatrixParams[3][5] += 180.0
+        }
     
-    piecesWorldMatrixParams[0] = [translations[0][0], translations[0][1], translations[0][2], 0.0, 0.0, 0.0, 1.0];
-    console.log(piecesWorldMatrixParams[0]);
 }
 
 /* Inizializza il program (identificato da shadersType), creando per quel program l'array (globale)

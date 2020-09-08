@@ -36,9 +36,9 @@ function solutionMatrix(index) {
         transx = 0.56;
     }
     else {
-        transx = -0.572156;
+        transx = -0.41
     }
-  let afterTrans3 = utils.multiplyMatrices(utils.MakeTranslateMatrix(transx, 1.4528228, 0.0), world3)
+  let afterTrans3 = utils.multiplyMatrices(utils.MakeTranslateMatrix(transx, 1.617, 0.0), world3)
   returnMatrix = utils.multiplyMatrices(
     utils.MakeWorld(selectedTarget.translations[3][0], selectedTarget.translations[3][1], selectedTarget.translations[3][2], 0.0, 0.0, selectedTarget.rotation[3], 1.0),
     afterTrans3)
