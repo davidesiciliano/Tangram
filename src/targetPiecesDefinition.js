@@ -1,4 +1,3 @@
-//todo perche le normali avevano la z = -1?
 var pieces = [
   {
     //piece 1

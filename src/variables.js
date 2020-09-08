@@ -118,13 +118,13 @@ var directionalLightDir = [
 
 var directionalLightColor = [1.0, 1.0, 1.0, 1.0];
 
-//pointlight
+//Point Light
 var pointLightPosition = [0.0, 0.0, 10.0];
 var pointLightColor = [1.0, 1.0, 1.0, 1.0];
 var pointLightDecay = 3.0;
 var pointLightTarget = 10.0;
 
-//spotlight
+//Spot Light
 var spotLightPos = [0.0, 0.0, 0.5];
 var spotLightTheta = utils.degToRad(0);
 var spotLightPhi = utils.degToRad(0);

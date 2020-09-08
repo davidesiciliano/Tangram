@@ -1,14 +1,13 @@
-var perspectiveMatrix;
-var mouseClicked = 7.0;
+var mouseClicked = 25.0;
+
 function main() {
 
   window.addEventListener("keydown", didPressKey, false);
-  canvas.addEventListener("mousedown", didMouseDown) ;
+  canvas.addEventListener("mousedown", didMouseDown);
   canvas.addEventListener('mousemove', didMoveMouse);
   canvas.addEventListener('mouseup', didMouseUp);
 
   initPositions();
-
 
   drawPieces();
   drawFloor()
@@ -56,6 +55,7 @@ async function init() {
 
 window.onload = init;
 
+//TODO: spostare tutto in events
 
 var selectedPieceIndex = 0;
 var keys = [];
@@ -66,22 +66,22 @@ var didPressKey = function (e) {
 
       case 37: 	// Left arrow
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
-            piecesWorldMatrixParams[selectedPieceIndex][0] -= 0.025;
+          piecesWorldMatrixParams[selectedPieceIndex][0] -= 0.025;
         break;
 
       case 39: 	// Right arrow
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
-            piecesWorldMatrixParams[selectedPieceIndex][0] += 0.025;
+          piecesWorldMatrixParams[selectedPieceIndex][0] += 0.025;
         break;
 
       case 38:	// Up arrow
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
-            piecesWorldMatrixParams[selectedPieceIndex][1] += 0.025;
+          piecesWorldMatrixParams[selectedPieceIndex][1] += 0.025;
         break;
 
       case 40:	// Down arrow
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
-            piecesWorldMatrixParams[selectedPieceIndex][1] -= 0.025;
+          piecesWorldMatrixParams[selectedPieceIndex][1] -= 0.025;
         break;
 //
       case 90: //Z
@@ -91,13 +91,13 @@ var didPressKey = function (e) {
 
       case 88: //X
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
-            piecesWorldMatrixParams[selectedPieceIndex][3] += 45.0;
+          piecesWorldMatrixParams[selectedPieceIndex][3] += 45.0;
         break;
 
       case 32: //space
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
-            piecesWorldMatrixParams[selectedPieceIndex][4] = - piecesWorldMatrixParams[selectedPieceIndex][4];
-          break;
+          piecesWorldMatrixParams[selectedPieceIndex][4] = -piecesWorldMatrixParams[selectedPieceIndex][4];
+        break;
     }
 
     keys[e.keyCode] = false;
@@ -105,12 +105,11 @@ var didPressKey = function (e) {
 }
 
 
-
 //updates position of object into objectOrientation[objectIndex] = {x, y, angle}
 //then stores the WorldMatrix into objectWorldMatrix[objectIndex] = MakeWorld(newX, newY, 0.0, 0.0, 0.0, newAngle, objectsInitialScale)
 function movePiece(pieceIndex, newX, newY, newAngle) {
 
-    //todo
+  //todo
   piecesWorldMatrix[0] = utils.MakeWorld()
 }
 
@@ -118,7 +117,6 @@ function getWorldMatrixValues(pieceIndex) {
   var worldMatrix = createPieceWorldMatrix(pieceIndex)
   return [worldMatrix[0], worldMatrix[1], worldMatrix[2], worldMatrix[3], worldMatrix[4]]
 }
-
 
 var isMovingPiece = false;
 
@@ -150,13 +148,13 @@ var didMouseDown = function (e) {
 }
 
 var didMoveMouse = function (e) {
-    console.log(selectedPieceIndex);
-    if (isMovingPiece === true) {
-        let params = piecesWorldMatrixParams[selectedPieceIndex];
-        let movement = scaleMouseDelta(e);
-        params[0] += movement.deltaX;
-        params[1] -= movement.deltaY;
-    }
+  console.log(selectedPieceIndex);
+  if (isMovingPiece === true) {
+    let params = piecesWorldMatrixParams[selectedPieceIndex];
+    let movement = scaleMouseDelta(e);
+    params[0] += movement.deltaX;
+    params[1] -= movement.deltaY;
+  }
 }
 
 var didMouseUp = function (e) {
@@ -166,7 +164,7 @@ var didMouseUp = function (e) {
 
 function scaleMouseDelta(event) {
   var rect = canvas.getBoundingClientRect();
-  let deltaX = event.movementX  * 20 / canvas.width;
+  let deltaX = event.movementX * 20 / canvas.width;
   let deltaY = event.movementY * 20 / canvas.height * (canvas.height / canvas.width);
   return {
     deltaX: deltaX,
