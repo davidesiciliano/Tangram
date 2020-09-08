@@ -45,7 +45,7 @@ function drawPieces() {
       gl.uniform1f(locationsArray[ShadersType.pieces].spotLightDecay, spotLightDecay);
 
       gl.uniform1f(locationsArray[ShadersType.pieces].selection, mouseClicked);
-      gl.uniform1f(locationsArray[ShadersType.pieces].index, ((i >> 0) & 0xFF) / 0xFF);
+      gl.uniform1f(locationsArray[ShadersType.pieces].index, (((255 - i) >> 0) & 0xFF) / 0xFF);
 
       gl.bindVertexArray(piecesVaos[i]);
       gl.drawElements(gl.TRIANGLES, piecesIndexData[i].length, gl.UNSIGNED_SHORT, 0);

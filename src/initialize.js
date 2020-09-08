@@ -70,7 +70,7 @@ function initPositions() {
   //second big triangle
   piecesWorldMatrixParams[6] = [-0.019658, 1.216299, -0.10, 180.0, 90.0, 0.0, 1.0];
   //tray
-  piecesWorldMatrixParams[7] = [0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0]
+  piecesWorldMatrixParams[7] = [0.0, 0.0, -0.09, 0.0, 90.0, 0.0, 1.0]
 
   for (i = 0; i < 8; i++) {
     piecesWorldMatrixParams[i][0] -= 4;
