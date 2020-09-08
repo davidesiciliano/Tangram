@@ -2,9 +2,10 @@ var programs = new Array();
 var gl;
 var baseDir;
 var shaderDir;
+var canvas;
 
 //region: pieces
-var piecesWorldMatrix = new Array();
+var piecesWorldMatrixParams = new Array();
 var piecesNormalMatrix = new Array();
 let piecesModelLocations = [
   'model/piece1.obj',
@@ -23,6 +24,26 @@ var piecesNormalData = new Array();
 var piecesIndexData = new Array();
 var piecesVaos = new Array();
 //endregion
+
+var initialTranslations = [
+    [-1.019658, 0.125, -0.10],
+    [1.43125, -1.346947, -0.10],
+    [0.532533, 0.125, -0.10],
+    [1.549651, 0.519417, -0.10],
+    [-0.016485, -0.875, -0.10],
+    [-1.019658, -1.498514, -0.10],
+    [-0.019658, 1.216299, -0.10]
+]
+
+var solutionTranslations = [
+    [1.0, 2.0, 0.0],
+    [1.411592, 0.528053, 0.0],
+    [-0.436478, 0.957322, 0.0],
+    [0.56, 1.4528228, 0.0],
+    [0.0, 0.0, 0.0],
+    [0.957322, 0.358809, 0.0],
+    [1.967322, -0.931023, 0.0]
+]
 
 //region: floor
 var floorWorldMatrix;

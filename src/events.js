@@ -120,7 +120,7 @@
   });
 
   document.getElementById("checkBtn").addEventListener("click", () => {
-    var correct = checkSolution(selectedSetup);
+    var correct = checkSolution(selectedTarget);
     if (correct)
       window.alert("Incredibileeee! Rete! Che gol!");
     else

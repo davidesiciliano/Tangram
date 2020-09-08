@@ -9,8 +9,10 @@ function drawPieces() {
 
     for (i = 0; i < piecesModel.length; i++) {
       gl.useProgram(programs[ShadersType.pieces]);
+        
+      //updateTransformationMatrices(i);
 
-      let worldViewMatrix = utils.multiplyMatrices(viewMatrix, piecesWorldMatrix[i]);
+      let worldViewMatrix = utils.multiplyMatrices(viewMatrix, createPieceWorldMatrix(i));
       let projectionMatrix = utils.multiplyMatrices(perspectiveMatrix, worldViewMatrix);
 
       let normalMatrix = utils.invertMatrix(utils.transposeMatrix(worldViewMatrix));
@@ -43,11 +45,15 @@ function drawPieces() {
       gl.uniform1f(locationsArray[ShadersType.pieces].spotLightConeIn, spotLightConeIn);
       gl.uniform1f(locationsArray[ShadersType.pieces].spotLightTarget, spotLightTarget);
       gl.uniform1f(locationsArray[ShadersType.pieces].spotLightDecay, spotLightDecay);
+        
+        gl.uniform1f(locationsArray[ShadersType.pieces].selection, mouseClicked);
+    gl.uniform1f(locationsArray[ShadersType.pieces].index, ((i >> 0) & 0xFF) / 0xFF);
 
       gl.bindVertexArray(piecesVaos[i]);
       gl.drawElements(gl.TRIANGLES, piecesIndexData[i].length, gl.UNSIGNED_SHORT, 0);
     }
 
+    if (mouseClicked != 2.0) {
     window.requestAnimationFrame(drawScenePieces);
   }
-}
+}}

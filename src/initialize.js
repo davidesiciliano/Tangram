@@ -1,3 +1,17 @@
+function createPieceWorldMatrix(index) {
+    var param = piecesWorldMatrixParams[index];
+    return utils.MakeWorld(param[0], param[1], param[2], param[3], param[4], param[5], param[6])
+}
+
+function extractAnglesFromMatrix(matrix) {
+    var angles = Array();
+    angles[0] = Math.atan2(matrix[9], matrix[10]) * 180/Math.PI;
+    angles[1] = Math.atan2(-matrix[8], Math.sqrt(Math.pow(matrix[9], 2) + Math.pow(matrix[10], 2))) * 180/Math.PI;
+    angles[2] = Math.atan2(matrix[4], matrix[0]) * 180/Math.PI;
+    
+    return angles;
+}
+
 async function loadModels() {
   let piece1ObjStr = await utils.get_objstr(baseDir + piecesModelLocations[0]);
   piecesModel[0] = new OBJ.Mesh(piece1ObjStr);
@@ -42,26 +56,28 @@ async function loadModels() {
 function initPositions() {
   //region: creates world matrices for initial position of pieces
   //first big triangle
-  piecesWorldMatrix[0] = utils.MakeWorld(-1.019658, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
+    
+  piecesWorldMatrixParams[0] = [-1.019658, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0];
   //middle triangle
-  piecesWorldMatrix[1] = utils.MakeWorld(1.43125, -1.346947, -0.10, 90.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[1] = [1.43125, -1.346947, -0.10, 90.0, 90.0, 0.0, 1.0];
   //first small triangle
-  piecesWorldMatrix[2] = utils.MakeWorld(0.532533, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[2] = [0.532533, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0];
   //trapezoid
-  piecesWorldMatrix[3] = utils.MakeWorld(1.549651, 0.519417, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[3] = [1.549651, 0.519417, -0.10, 0.0, 90.0, 0.0, 1.0];
   //square
-  piecesWorldMatrix[4] = utils.MakeWorld(-0.016485, -0.875, -0.10, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[4] = [-0.016485, -0.875, -0.10, 0.0, 90.0, 0.0, 1.0];
   //second small triangle
-  piecesWorldMatrix[5] = utils.MakeWorld(-1.019658, -1.498514, -0.10, 180.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[5] = [-1.019658, -1.498514, -0.10, 180.0, 90.0, 0.0, 1.0];
   //second big triangle
-  piecesWorldMatrix[6] = utils.MakeWorld(-0.019658, 1.216299, -0.10, 180.0, 90.0, 0.0, 1.0);
-  //tray - positioned
-  piecesWorldMatrix[7] = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
+  piecesWorldMatrixParams[6] = [-0.019658, 1.216299, -0.10, 180.0, 90.0, 0.0, 1.0];
+  //tray
+  piecesWorldMatrixParams[7] = [0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0]
+    
 
   for (i = 0; i < 8; i++) {
-    piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
+    piecesWorldMatrixParams[i][0] -= 4; 
+    piecesWorldMatrixParams[i][1] -= 1;
   }
-  piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0])); //todo: questo serve? viene usato solo qui
   //endregion
 
   //region: floor
@@ -70,74 +86,39 @@ function initPositions() {
   //endregion
 
   for (i = 8; i < 15; i++) {
-    piecesWorldMatrix[i] = utils.identityMatrix();
-    if (selectedTarget.mirror && i === 11) {
-      piecesWorldMatrix[i] = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
-    }
-    let world = utils.MakeWorld(
+     piecesWorldMatrixParams[i] = [
       selectedTarget.translations[i - 8][0],
       selectedTarget.translations[i - 8][1],
       selectedTarget.translations[i - 8][2],
       0.0,
       0.0,
       selectedTarget.rotation[i - 8],
-      1.0);
-    piecesWorldMatrix[i] = utils.multiplyMatrices(world, piecesWorldMatrix[i]);
+      1.0];
+      if (selectedTarget.mirror && i === 11) {
+      piecesWorldMatrixParams[i][4] *= -1;
+    }
   }
 }
 
 function piecesInSolutionPosition() {
-  let world0 = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
-  let afterTrans0 = utils.multiplyMatrices(utils.MakeTranslateMatrix(1.0, 2.0, 0.0), world0)
-  piecesWorldMatrix[0] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[0][0], selectedTarget.translations[0][1], selectedTarget.translations[0][2], 0.0, 0.0, selectedTarget.rotation[0], 1.0),
-    afterTrans0)
-
-  let world1 = utils.MakeWorld(0.0, 0.0, 0.0, 90.0, 90.0, 0.0, 1.0);
-  let afterTrans1 = utils.multiplyMatrices(utils.MakeTranslateMatrix(1.411592, 0.528053, 0.0), world1)
-  piecesWorldMatrix[1] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[1][0], selectedTarget.translations[1][1], selectedTarget.translations[1][2], 0.0, 0.0, selectedTarget.rotation[1], 1.0),
-    afterTrans1)
+    var piecesWorldMatrix = Array();
+    var i;
+    var rotation = Array();
+    var translations = Array();
+    for (i = 0; i < 7; i++) {
+        piecesWorldMatrix[i] = solutionMatrix(i);
+        translations[i] = [piecesWorldMatrix[i][3], piecesWorldMatrix[i][7], piecesWorldMatrix[i][11]];
+        rotation[i] = extractAnglesFromMatrix(solutionMatrix(i));
     
-    let world2 = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
-  let afterTrans2 = utils.multiplyMatrices(utils.MakeTranslateMatrix(-0.436478, 0.957322, 0.0), world2)
-  piecesWorldMatrix[2] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[2][0], selectedTarget.translations[2][1], selectedTarget.translations[2][2], 0.0, 0.0, selectedTarget.rotation[2], 1.0),
-    afterTrans2)
     
-    let world3 = utils.identityMatrix();
-    if (!selectedTarget.mirror) {
-        world3 = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
+    piecesWorldMatrixParams[i] = [translations[i][0], translations[i][1], translations[i][2], -rotation[i][2], rotation[i][0], -rotation[i][1], 1.0];
+    
     }
-    world3 = utils.multiplyMatrices(utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0), world3);
-    var transx;
-    if(selectedTarget.mirror) {
-        transx = 0.56;
-    }
-    else {
-        transx = -0.572156;
-    }
-  let afterTrans3 = utils.multiplyMatrices(utils.MakeTranslateMatrix(transx, 1.4528228, 0.0), world3)
-  piecesWorldMatrix[3] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[3][0], selectedTarget.translations[3][1], selectedTarget.translations[3][2], 0.0, 0.0, selectedTarget.rotation[3], 1.0),
-    afterTrans3)
     
-     let world4 = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
-  piecesWorldMatrix[4] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[4][0], selectedTarget.translations[4][1], selectedTarget.translations[4][2], 0.0, 0.0, selectedTarget.rotation[4], 1.0),
-    world4)
+    if(!selectedTarget.mirror) {
+            piecesWorldMatrixParams[3][5] += 180.0
+        }
     
-     let world5 = utils.MakeWorld(0.0, 0.0, 0.0, 180.0, 90.0, 0.0, 1.0);
-  let afterTrans5 = utils.multiplyMatrices(utils.MakeTranslateMatrix(0.957322, 0.358809, 0.0), world5)
-  piecesWorldMatrix[5] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[5][0], selectedTarget.translations[5][1], selectedTarget.translations[5][2], 0.0, 0.0, selectedTarget.rotation[5], 1.0),
-    afterTrans5)
-    
-    let world6 = utils.MakeWorld(0.0, 0.0, 0.0, 180.0, 90.0, 0.0, 1.0);
-  let afterTrans6 = utils.multiplyMatrices(utils.MakeTranslateMatrix(1.967322, -0.931023, 0.0), world6)
-  piecesWorldMatrix[6] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[6][0], selectedTarget.translations[6][1], selectedTarget.translations[6][2], 0.0, 0.0, selectedTarget.rotation[6], 1.0),
-    afterTrans6)
 }
 
 /* Inizializza il program (identificato da shadersType), creando per quel program l'array (globale)
@@ -185,6 +166,12 @@ function getAttributeAndUniformLocation(gl, shadersType) {
   var spotLightDecay = gl.getUniformLocation(programs[shadersType], 'LCDecay');
   var spotLightTarget = gl.getUniformLocation(programs[shadersType], 'LCTarget');
 
+    
+  var selection = gl.getUniformLocation(programs[shadersType], 'selection');
+  var index = gl.getUniformLocation(programs[shadersType], 'index');
+
+    
+    
   if (shadersType === ShadersType.pieces) {
     locationsArray[shadersType] = {
       "positionAttributeLocation": positionAttributeLocation,
@@ -217,7 +204,10 @@ function getAttributeAndUniformLocation(gl, shadersType) {
       "spotLightTarget": spotLightTarget,
 
       "normalMatrixPositionHandle": normalMatrixPositionHandle,
-      "vertexMatrixPositionHandle": vertexMatrixPositionHandle
+      "vertexMatrixPositionHandle": vertexMatrixPositionHandle,
+        
+    "selection": selection,
+    "index": index
     };
     return;
   }
