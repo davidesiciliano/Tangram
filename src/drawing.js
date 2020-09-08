@@ -142,7 +142,7 @@ var didMouseDown = function (e) {
   console.log(pixels)
   selectedPieceIndex = pixels[0];
 
-  if (selectedPieceIndex != -1) {
+  if (selectedPieceIndex !== -1) {
     isMovingPiece = true;
   }
 }
