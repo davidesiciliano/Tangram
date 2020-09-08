@@ -1,12 +1,4 @@
-var solutionMatrices = [
-    solutionMatrix(0),
-    solutionMatrix(1),
-    solutionMatrix(2),
-    solutionMatrix(3),
-    solutionMatrix(4),
-    solutionMatrix(5),
-    solutionMatrix(6)
-]
+
 
 var translations = Array();
 var rotation = Array();
@@ -32,7 +24,6 @@ function subArrays(v1, v2) {
         }
     return sum;
 }
-
 
 function checkSolution(selectedTarget) {
     for (i = 0; i < 7; i++) {

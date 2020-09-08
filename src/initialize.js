@@ -1,3 +1,8 @@
+function createPieceWorldMatrix(index) {
+    var param = piecesWorldMatrixParams[index];
+    return utils.MakeWorld(param[0], param[1], param[2], param[3], param[4], param[5], param[6])
+}
+
 async function loadModels() {
   let piece1ObjStr = await utils.get_objstr(baseDir + piecesModelLocations[0]);
   piecesModel[0] = new OBJ.Mesh(piece1ObjStr);
@@ -42,20 +47,6 @@ async function loadModels() {
 function initPositions() {
   //region: creates world matrices for initial position of pieces
   //first big triangle
-
-  piecesWorldMatrix[0] = utils.MakeWorld(-1.019658, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
-  //middle triangle
-  piecesWorldMatrix[1] = utils.MakeWorld(1.43125, -1.346947, -0.10, 90.0, 90.0, 0.0, 1.0);
-  //first small triangle
-  piecesWorldMatrix[2] = utils.MakeWorld(0.532533, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0);
-  //trapezoid
-  piecesWorldMatrix[3] = utils.MakeWorld(1.549651, 0.519417, -0.10, 0.0, 90.0, 0.0, 1.0);
-  //square
-  piecesWorldMatrix[4] = utils.MakeWorld(-0.016485, -0.875, -0.10, 0.0, 90.0, 0.0, 1.0);
-  //second small triangle
-  piecesWorldMatrix[5] = utils.MakeWorld(-1.019658, -1.498514, -0.10, 180.0, 90.0, 0.0, 1.0);
-  //second big triangle
-  piecesWorldMatrix[6] = utils.MakeWorld(-0.019658, 1.216299, -0.10, 180.0, 90.0, 0.0, 1.0);
     
   piecesWorldMatrixParams[0] = [-1.019658, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0];
   //middle triangle
@@ -70,15 +61,13 @@ function initPositions() {
   piecesWorldMatrixParams[5] = [-1.019658, -1.498514, -0.10, 180.0, 90.0, 0.0, 1.0];
   //second big triangle
   piecesWorldMatrixParams[6] = [-0.019658, 1.216299, -0.10, 180.0, 90.0, 0.0, 1.0];
+  //tray
+  piecesWorldMatrixParams[7] = [0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0]
     
-    
-  //tray - positioned
-  piecesWorldMatrix[7] = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
 
   for (i = 0; i < 8; i++) {
     // piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
   }
-  piecesNormalMatrix[0] = utils.invertMatrix(utils.transposeMatrix(piecesWorldMatrix[0])); //todo: questo serve? viene usato solo qui
   //endregion
 
   //region: floor
@@ -87,29 +76,36 @@ function initPositions() {
   //endregion
 
   for (i = 8; i < 15; i++) {
-    piecesWorldMatrix[i] = utils.identityMatrix();
-    if (selectedTarget.mirror && i === 11) {
-      piecesWorldMatrix[i] = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
-    }
-    let world = utils.MakeWorld(
+     piecesWorldMatrixParams[i] = [
       selectedTarget.translations[i - 8][0],
       selectedTarget.translations[i - 8][1],
       selectedTarget.translations[i - 8][2],
       0.0,
       0.0,
       selectedTarget.rotation[i - 8],
-      1.0);
-    piecesWorldMatrix[i] = utils.multiplyMatrices(world, piecesWorldMatrix[i]);
+      1.0];
+      if (selectedTarget.mirror && i === 11) {
+      piecesWorldMatrixParams[i][4] *= -1;
+    }
   }
 }
 
-
-
 function piecesInSolutionPosition() {
+    var piecesWorldMatrix = Array();
     var i;
     for (i = 0; i < 7; i++) {
         piecesWorldMatrix[i] = solutionMatrix(i);
+    }   
+    //TODO da piecesworldmatrix a parametri
+    var translations = Array();
+    for(i = 0; i < 7; i++) {
+        translations[i] = [piecesWorldMatrix[i][3], piecesWorldMatrix[i][7], piecesWorldMatrix[i][11]];
     }
+    
+    var rotation = Array(); 
+    
+    piecesWorldMatrixParams[0] = [translations[0][0], translations[0][1], translations[0][2], 0.0, 0.0, 0.0, 1.0];
+    console.log(piecesWorldMatrixParams[0]);
 }
 
 /* Inizializza il program (identificato da shadersType), creando per quel program l'array (globale)

@@ -110,36 +110,15 @@ var didPressKey = function (e) {
 //then stores the WorldMatrix into objectWorldMatrix[objectIndex] = MakeWorld(newX, newY, 0.0, 0.0, 0.0, newAngle, objectsInitialScale)
 function movePiece(pieceIndex, newX, newY, newAngle) {
 
+    //todo
   piecesWorldMatrix[0] = utils.MakeWorld()
 }
 
 function getWorldMatrixValues(pieceIndex) {
-  var worldMatrix = piecesWorldMatrix[pieceIndex]
+  var worldMatrix = createPieceWorldMatrix(pieceIndex)
   return [worldMatrix[0], worldMatrix[1], worldMatrix[2], worldMatrix[3], worldMatrix[4]]
 }
 
-function updateTransformationMatrices(pieceIndex) {
-  if (pieceIndex < 7) {
-    updateModel(pieceIndex);
-  }
-  // updateView();
-  // updatePerspective();
-}
-
-function updateModel(pieceIndex) {
-  let worldParams = piecesWorldMatrixParams[pieceIndex];
-  piecesWorldMatrix[pieceIndex] = utils.MakeWorld(
-      worldParams[0],
-      worldParams[1],
-      worldParams[2],
-      worldParams[3],
-      worldParams[4],
-      worldParams[5],
-      worldParams[6]
-  );
-
-  piecesWorldMatrix[pieceIndex] = utils.multiplyMatrices(translate, piecesWorldMatrix[pieceIndex]);
-}
 
 var isMovingPiece = false;
 

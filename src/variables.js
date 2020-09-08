@@ -5,7 +5,6 @@ var shaderDir;
 var canvas;
 
 //region: pieces
-var piecesWorldMatrix = new Array();
 var piecesWorldMatrixParams = new Array();
 var piecesNormalMatrix = new Array();
 let piecesModelLocations = [
