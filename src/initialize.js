@@ -75,7 +75,8 @@ function initPositions() {
     
 
   for (i = 0; i < 8; i++) {
-    // piecesWorldMatrix[i] = utils.multiplyMatrices(translate, piecesWorldMatrix[i]);
+    piecesWorldMatrixParams[i][0] -= 4; 
+    piecesWorldMatrixParams[i][1] -= 1;
   }
   //endregion
 
