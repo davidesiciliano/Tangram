@@ -1,5 +1,3 @@
-//swan, cat, heart, rabbit, dancing man
-
 var targets = [
   {
     name: "Swan",
@@ -67,7 +65,6 @@ var targets = [
     ],
     mirror: true,
   },
-
   {
     name: "Man on horse",
     translations: [

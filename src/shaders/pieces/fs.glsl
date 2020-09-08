@@ -83,10 +83,10 @@ void main() {
   vec4 specular = LASpecular * lightSwitch.x + LBSpecular * lightSwitch.y + LCSpecular * lightSwitch.z;
 
   vec4 out_color = clamp(diffuse + specular, 0.0, 1.0);
-   vec4 prova = vec4(out_color.rgb, 1.0);
+  vec4 color = vec4(out_color.rgb, 1.0);
 
-  if (selection == 2.) {
-    prova = vec4(index, out_color.g,out_color.b, 1.);
+  if (selection == 1.) {
+    color = vec4(out_color.r, out_color.g,out_color.b, index);
   }
-  outColor = prova;
+  outColor = color;
 }

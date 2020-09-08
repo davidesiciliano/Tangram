@@ -1,15 +1,15 @@
 function createPieceWorldMatrix(index) {
-    var param = piecesWorldMatrixParams[index];
-    return utils.MakeWorld(param[0], param[1], param[2], param[3], param[4], param[5], param[6])
+  var param = piecesWorldMatrixParams[index];
+  return utils.MakeWorld(param[0], param[1], param[2], param[3], param[4], param[5], param[6])
 }
 
 function extractAnglesFromMatrix(matrix) {
-    var angles = Array();
-    angles[0] = Math.atan2(matrix[9], matrix[10]) * 180/Math.PI;
-    angles[1] = Math.atan2(-matrix[8], Math.sqrt(Math.pow(matrix[9], 2) + Math.pow(matrix[10], 2))) * 180/Math.PI;
-    angles[2] = Math.atan2(matrix[4], matrix[0]) * 180/Math.PI;
-    
-    return angles;
+  var angles = Array();
+  angles[0] = Math.atan2(matrix[9], matrix[10]) * 180 / Math.PI;
+  angles[1] = Math.atan2(-matrix[8], Math.sqrt(Math.pow(matrix[9], 2) + Math.pow(matrix[10], 2))) * 180 / Math.PI;
+  angles[2] = Math.atan2(matrix[4], matrix[0]) * 180 / Math.PI;
+
+  return angles;
 }
 
 async function loadModels() {
@@ -56,7 +56,6 @@ async function loadModels() {
 function initPositions() {
   //region: creates world matrices for initial position of pieces
   //first big triangle
-    
   piecesWorldMatrixParams[0] = [-1.019658, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0];
   //middle triangle
   piecesWorldMatrixParams[1] = [1.43125, -1.346947, -0.10, 90.0, 90.0, 0.0, 1.0];
@@ -71,11 +70,10 @@ function initPositions() {
   //second big triangle
   piecesWorldMatrixParams[6] = [-0.019658, 1.216299, -0.10, 180.0, 90.0, 0.0, 1.0];
   //tray
-  piecesWorldMatrixParams[7] = [0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0]
-    
+  piecesWorldMatrixParams[7] = [0.0, 0.0, -0.09, 0.0, 90.0, 0.0, 1.0]
 
   for (i = 0; i < 8; i++) {
-    piecesWorldMatrixParams[i][0] -= 4; 
+    piecesWorldMatrixParams[i][0] -= 4;
     piecesWorldMatrixParams[i][1] -= 1;
   }
   //endregion
@@ -86,7 +84,7 @@ function initPositions() {
   //endregion
 
   for (i = 8; i < 15; i++) {
-     piecesWorldMatrixParams[i] = [
+    piecesWorldMatrixParams[i] = [
       selectedTarget.translations[i - 8][0],
       selectedTarget.translations[i - 8][1],
       selectedTarget.translations[i - 8][2],
@@ -94,31 +92,26 @@ function initPositions() {
       0.0,
       selectedTarget.rotation[i - 8],
       1.0];
-      if (selectedTarget.mirror && i === 11) {
+    if (selectedTarget.mirror && i === 11) {
       piecesWorldMatrixParams[i][4] *= -1;
     }
   }
 }
 
 function piecesInSolutionPosition() {
-    var piecesWorldMatrix = Array();
-    var i;
-    var rotation = Array();
-    var translations = Array();
-    for (i = 0; i < 7; i++) {
-        piecesWorldMatrix[i] = solutionMatrix(i);
-        translations[i] = [piecesWorldMatrix[i][3], piecesWorldMatrix[i][7], piecesWorldMatrix[i][11]];
-        rotation[i] = extractAnglesFromMatrix(solutionMatrix(i));
-    
-    
+  var piecesWorldMatrix = Array();
+  var i;
+  var rotation = Array();
+  var translations = Array();
+  for (i = 0; i < 7; i++) {
+    piecesWorldMatrix[i] = solutionMatrix(i);
+    translations[i] = [piecesWorldMatrix[i][3], piecesWorldMatrix[i][7], piecesWorldMatrix[i][11]];
+    rotation[i] = extractAnglesFromMatrix(solutionMatrix(i));
     piecesWorldMatrixParams[i] = [translations[i][0], translations[i][1], translations[i][2], -rotation[i][2], rotation[i][0], -rotation[i][1], 1.0];
-    
-    }
-    
-    if(!selectedTarget.mirror) {
-            piecesWorldMatrixParams[3][5] += 180.0
-        }
-    
+  }
+  if (!selectedTarget.mirror) {
+    piecesWorldMatrixParams[3][5] += 180.0
+  }
 }
 
 /* Inizializza il program (identificato da shadersType), creando per quel program l'array (globale)
@@ -166,12 +159,9 @@ function getAttributeAndUniformLocation(gl, shadersType) {
   var spotLightDecay = gl.getUniformLocation(programs[shadersType], 'LCDecay');
   var spotLightTarget = gl.getUniformLocation(programs[shadersType], 'LCTarget');
 
-    
   var selection = gl.getUniformLocation(programs[shadersType], 'selection');
   var index = gl.getUniformLocation(programs[shadersType], 'index');
 
-    
-    
   if (shadersType === ShadersType.pieces) {
     locationsArray[shadersType] = {
       "positionAttributeLocation": positionAttributeLocation,
@@ -205,9 +195,9 @@ function getAttributeAndUniformLocation(gl, shadersType) {
 
       "normalMatrixPositionHandle": normalMatrixPositionHandle,
       "vertexMatrixPositionHandle": vertexMatrixPositionHandle,
-        
-    "selection": selection,
-    "index": index
+
+      "selection": selection,
+      "index": index
     };
     return;
   }

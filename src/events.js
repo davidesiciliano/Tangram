@@ -140,7 +140,6 @@
       userHasSurrendered = true;
       piecesInSolutionPosition();
     }
-
   });
 
 })();
