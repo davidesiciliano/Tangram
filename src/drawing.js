@@ -1,4 +1,4 @@
-var mouseClicked = 25.0;
+var mouseClicked = 0.0;
 
 function main() {
 
@@ -120,35 +120,29 @@ function getWorldMatrixValues(pieceIndex) {
 
 var isMovingPiece = false;
 
-let mouseX = -1;
-let mouseY = -1;
-
 var didMouseDown = function (e) {
-  const rect = canvas.getBoundingClientRect();
-  mouseX = e.clientX - rect.left;
-  mouseY = e.clientY - rect.top;
-
-  const pixelX = mouseX * gl.canvas.width / gl.canvas.clientWidth;
-  const pixelY = gl.canvas.height - mouseY * gl.canvas.height / gl.canvas.clientHeight - 1;
-
-
-  mouseClicked = 2.;
-  drawPieces();
-  mouseClicked = 7.0;
-  drawPieces();
-
-  pixels = new Uint8Array(4); // A single RGBA value
-  gl.readPixels(pixelX, pixelY, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
-  console.log(pixels)
-  selectedPieceIndex = pixels[0];
-
   if (selectedPieceIndex != -1) {
+   // piecesWorldMatrixParams[selectedPieceIndex][2] = -0.10
+  }
+
+  mouseClicked = 1.0;
+  drawPieces();
+
+  let mouse = getMousePosition(e);
+  pixel = new Uint8Array(4); // A single RGBA value
+  gl.readPixels(mouse.x, mouse.y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+
+  if (pixel[3] > 255 - 7) {
+    selectedPieceIndex = 255 - pixel[3];
+    // piecesWorldMatrixParams[selectedPieceIndex][2] = 0.0;
     isMovingPiece = true;
   }
+
+  mouseClicked = 0.0;
+  drawPieces();
 }
 
 var didMoveMouse = function (e) {
-  console.log(selectedPieceIndex);
   if (isMovingPiece === true) {
     let params = piecesWorldMatrixParams[selectedPieceIndex];
     let movement = scaleMouseDelta(e);
@@ -159,7 +153,6 @@ var didMoveMouse = function (e) {
 
 var didMouseUp = function (e) {
   isMovingPiece = false;
-  selectedPieceIndex = -1;
 }
 
 function scaleMouseDelta(event) {
@@ -169,5 +162,19 @@ function scaleMouseDelta(event) {
   return {
     deltaX: deltaX,
     deltaY: deltaY
+  };
+}
+
+function getMousePosition(event) {
+  const rect = canvas.getBoundingClientRect();
+  mouseX = event.clientX - rect.left;
+  mouseY = event.clientY - rect.top;
+
+  const pixelX = mouseX * gl.canvas.width / gl.canvas.clientWidth;
+  const pixelY = gl.canvas.height - mouseY * gl.canvas.height / gl.canvas.clientHeight - 1;
+
+  return {
+    x: pixelX,
+    y: pixelY
   };
 }

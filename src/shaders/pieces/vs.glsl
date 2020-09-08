@@ -11,11 +11,7 @@ out vec3 fsNormal;
 out vec3 fsPosition;
 
 void main() {
-//  if (selection == 7.0) {
     fsNormal = mat3(nMatrix) * inNormal;
     fsPosition = (pMatrix* vec4(inPosition, 1.0)).xyz;
     gl_Position = matrix * vec4(inPosition, 1.0);
-//  } else {
-//    gl_Position = matrix * vec4(0.2, 0.4, .4, 1.0);
-//  }
 }
