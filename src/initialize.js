@@ -86,58 +86,13 @@ function initPositions() {
   }
 }
 
-function piecesInSolutionPosition() {
-  let world0 = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
-  let afterTrans0 = utils.multiplyMatrices(utils.MakeTranslateMatrix(1.0, 2.0, 0.0), world0)
-  piecesWorldMatrix[0] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[0][0], selectedTarget.translations[0][1], selectedTarget.translations[0][2], 0.0, 0.0, selectedTarget.rotation[0], 1.0),
-    afterTrans0)
 
-  let world1 = utils.MakeWorld(0.0, 0.0, 0.0, 90.0, 90.0, 0.0, 1.0);
-  let afterTrans1 = utils.multiplyMatrices(utils.MakeTranslateMatrix(1.411592, 0.528053, 0.0), world1)
-  piecesWorldMatrix[1] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[1][0], selectedTarget.translations[1][1], selectedTarget.translations[1][2], 0.0, 0.0, selectedTarget.rotation[1], 1.0),
-    afterTrans1)
-    
-    let world2 = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
-  let afterTrans2 = utils.multiplyMatrices(utils.MakeTranslateMatrix(-0.436478, 0.957322, 0.0), world2)
-  piecesWorldMatrix[2] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[2][0], selectedTarget.translations[2][1], selectedTarget.translations[2][2], 0.0, 0.0, selectedTarget.rotation[2], 1.0),
-    afterTrans2)
-    
-    let world3 = utils.identityMatrix();
-    if (!selectedTarget.mirror) {
-        world3 = utils.multiplyMatrices(horizontalMirror, utils.identityMatrix());
+
+function piecesInSolutionPosition() {
+    var i;
+    for (i = 0; i < 7; i++) {
+        piecesWorldMatrix[i] = solutionMatrix(i);
     }
-    world3 = utils.multiplyMatrices(utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0), world3);
-    var transx;
-    if(selectedTarget.mirror) {
-        transx = 0.56;
-    }
-    else {
-        transx = -0.572156;
-    }
-  let afterTrans3 = utils.multiplyMatrices(utils.MakeTranslateMatrix(transx, 1.4528228, 0.0), world3)
-  piecesWorldMatrix[3] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[3][0], selectedTarget.translations[3][1], selectedTarget.translations[3][2], 0.0, 0.0, selectedTarget.rotation[3], 1.0),
-    afterTrans3)
-    
-     let world4 = utils.MakeWorld(0.0, 0.0, 0.0, 0.0, 90.0, 0.0, 1.0);
-  piecesWorldMatrix[4] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[4][0], selectedTarget.translations[4][1], selectedTarget.translations[4][2], 0.0, 0.0, selectedTarget.rotation[4], 1.0),
-    world4)
-    
-     let world5 = utils.MakeWorld(0.0, 0.0, 0.0, 180.0, 90.0, 0.0, 1.0);
-  let afterTrans5 = utils.multiplyMatrices(utils.MakeTranslateMatrix(0.957322, 0.358809, 0.0), world5)
-  piecesWorldMatrix[5] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[5][0], selectedTarget.translations[5][1], selectedTarget.translations[5][2], 0.0, 0.0, selectedTarget.rotation[5], 1.0),
-    afterTrans5)
-    
-    let world6 = utils.MakeWorld(0.0, 0.0, 0.0, 180.0, 90.0, 0.0, 1.0);
-  let afterTrans6 = utils.multiplyMatrices(utils.MakeTranslateMatrix(1.967322, -0.931023, 0.0), world6)
-  piecesWorldMatrix[6] = utils.multiplyMatrices(
-    utils.MakeWorld(selectedTarget.translations[6][0], selectedTarget.translations[6][1], selectedTarget.translations[6][2], 0.0, 0.0, selectedTarget.rotation[6], 1.0),
-    afterTrans6)
 }
 
 /* Inizializza il program (identificato da shadersType), creando per quel program l'array (globale)
