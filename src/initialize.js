@@ -98,16 +98,26 @@ function initPositions() {
   }
 }
 
+function createParamsFromMatrix(matrix) {
+    var rotation = Array();
+    var translation = Array();
+    var params = Array;
+    
+    translation = [matrix[3], matrix[7], matrix[11]];
+    console.log(translation)
+    rotation = extractAnglesFromMatrix(matrix);
+    params = [translation[0], translation[1], translation[2], -rotation[2], rotation[0], -rotation[1], 1.0];
+    return params;
+}
+
 function piecesInSolutionPosition() {
   var piecesWorldMatrix = Array();
   var i;
   var rotation = Array();
   var translations = Array();
   for (i = 0; i < 7; i++) {
-    piecesWorldMatrix[i] = solutionMatrix(i);
-    translations[i] = [piecesWorldMatrix[i][3], piecesWorldMatrix[i][7], piecesWorldMatrix[i][11]];
-    rotation[i] = extractAnglesFromMatrix(solutionMatrix(i));
-    piecesWorldMatrixParams[i] = [translations[i][0], translations[i][1], translations[i][2], -rotation[i][2], rotation[i][0], -rotation[i][1], 1.0];
+      piecesWorldMatrixParams[i] = createParamsFromMatrix(solutionMatrix(i));
+      
   }
   if (!selectedTarget.mirror) {
     piecesWorldMatrixParams[3][5] += 180.0
