@@ -3,7 +3,7 @@ function createPieceWorldMatrix(index) {
   return utils.MakeWorld(param[0], param[1], param[2], param[3], param[4], param[5], param[6])
 }
 
-function extractAnglesFromMatrix(matrix) {
+function extractAnglesFromWorldMatrix(matrix) {
   var angles = Array();
   angles[0] = Math.atan2(matrix[9], matrix[10]) * 180 / Math.PI;
   angles[1] = Math.atan2(-matrix[8], Math.sqrt(Math.pow(matrix[9], 2) + Math.pow(matrix[10], 2))) * 180 / Math.PI;
@@ -104,20 +104,16 @@ function createParamsFromMatrix(matrix) {
     var params = Array;
     
     translation = [matrix[3], matrix[7], matrix[11]];
-    console.log(translation)
-    rotation = extractAnglesFromMatrix(matrix);
+    //console.log(translation)
+    rotation = extractAnglesFromWorldMatrix(matrix);
     params = [translation[0], translation[1], translation[2], -rotation[2], rotation[0], -rotation[1], 1.0];
     return params;
 }
 
 function piecesInSolutionPosition() {
-  var piecesWorldMatrix = Array();
   var i;
-  var rotation = Array();
-  var translations = Array();
   for (i = 0; i < 7; i++) {
       piecesWorldMatrixParams[i] = createParamsFromMatrix(solutionMatrix(i));
-      
   }
   if (!selectedTarget.mirror) {
     piecesWorldMatrixParams[3][5] += 180.0

@@ -96,7 +96,11 @@ var didPressKey = function (e) {
 
       case 32: //space
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
-          piecesWorldMatrixParams[selectedPieceIndex][4] = -piecesWorldMatrixParams[selectedPieceIndex][4];
+          if (selectedPieceIndex !== 3) {
+            piecesWorldMatrixParams[selectedPieceIndex][3] += 180.0;
+          } else {
+            piecesWorldMatrixParams[selectedPieceIndex][4] = -piecesWorldMatrixParams[selectedPieceIndex][4];
+          }
         break;
     }
 

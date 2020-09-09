@@ -23,6 +23,8 @@ var piecesVertexPositionData = new Array();
 var piecesNormalData = new Array();
 var piecesIndexData = new Array();
 var piecesVaos = new Array();
+
+let piecesNumber = 7;
 //endregion
 
 var initialTranslations = [

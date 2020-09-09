@@ -120,11 +120,11 @@
   });
 
   document.getElementById("checkBtn").addEventListener("click", () => {
-    var correct = checkSolution(selectedTarget);
-    if (correct)
-      window.alert("Incredibileeee! Rete! Che gol!");
+    var correct = checkSolution();
+    if(correct) //if (correct && !userHasSurrendered) todo aggiungere controllo
+      window.alert("Soluzione Corretta");
     else
-      window.alert("Prova il check... non va!");
+      window.alert("Soluzione Sbagliata");
   });
 
   document.getElementById("resetBtn").addEventListener("click", () => {
@@ -135,7 +135,6 @@
   });
 
   document.getElementById("surrenderBtn").addEventListener("click", () => {
-    console.log("PRESS SURRENDER BUTTON")
     if (!userHasSurrendered) {
       userHasSurrendered = true;
       piecesInSolutionPosition();
