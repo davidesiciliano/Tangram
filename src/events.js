@@ -280,8 +280,8 @@ var didMouseUp = function (e) {
 
 function scaleMouseDelta(event) {
   var rect = canvas.getBoundingClientRect();
-  let deltaX = event.movementX * 20 / canvas.width;
-  let deltaY = event.movementY * 20 / canvas.height * (canvas.height / canvas.width);
+  let deltaX = event.movementX * 30 / canvas.width;
+  let deltaY = event.movementY * 30 / canvas.height * (canvas.height / canvas.width);
   return {
     deltaX: deltaX,
     deltaY: deltaY
