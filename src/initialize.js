@@ -160,6 +160,8 @@ function initPositions() {
       piecesWorldMatrixParams[i][4] *= -1;
     }
   }
+
+  piecesMaterialColor = initialPiecesMaterialColor;
 }
 
 function createParamsFromMatrix(matrix) {
@@ -230,6 +232,7 @@ function getAttributeAndUniformLocation(gl, shadersType) {
 
   var selection = gl.getUniformLocation(programs[shadersType], 'selection');
   var index = gl.getUniformLocation(programs[shadersType], 'index');
+  var selectedColor = gl.getUniformLocation(programs[shadersType], 'selectedColor');
 
   if (shadersType === ShadersType.pieces) {
     locationsArray[shadersType] = {
@@ -266,7 +269,8 @@ function getAttributeAndUniformLocation(gl, shadersType) {
       "vertexMatrixPositionHandle": vertexMatrixPositionHandle,
 
       "selection": selection,
-      "index": index
+      "index": index,
+      "selectedColor": selectedColor
     };
     return;
   }

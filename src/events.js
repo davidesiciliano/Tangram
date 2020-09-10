@@ -141,7 +141,7 @@
   document.getElementById("surrenderBtn").addEventListener("click", () => {
     if (!userHasSurrendered) {
       userHasSurrendered = true;
-      piecesInSolutionPosition();
+      piecesMaterialColor = surrenderPiecesMaterialColor;
     }
   });
 
@@ -243,7 +243,7 @@ var isMovingPiece = false;
 
 var didMouseDown = function (e) {
   if (selectedPieceIndex != -1) {
-    // piecesWorldMatrixParams[selectedPieceIndex][2] = -0.10
+    piecesWorldMatrixParams[selectedPieceIndex][2] = -0.10
   }
 
   mouseClicked = 1.0;
@@ -255,8 +255,10 @@ var didMouseDown = function (e) {
 
   if (pixel[3] > 255 - 7) {
     selectedPieceIndex = 255 - pixel[3];
-    // piecesWorldMatrixParams[selectedPieceIndex][2] = 0.0;
+     piecesWorldMatrixParams[selectedPieceIndex][2] = -0.093;
     isMovingPiece = true;
+  } else {
+    selectedPieceIndex = -1;
   }
 
   mouseClicked = 0.0;

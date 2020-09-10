@@ -33,6 +33,7 @@ uniform float SpecShine;
 
 uniform float selection;
 uniform float index;
+uniform vec3 selectedColor;
 
 out vec4 outColor;
 
@@ -84,9 +85,11 @@ void main() {
 
   vec4 out_color = clamp(diffuse + specular, 0.0, 1.0);
   vec4 color = vec4(out_color.rgb, 1.0);
+  color += vec4(selectedColor, 0.0);
 
   if (selection == 1.) {
     color = vec4(out_color.r, out_color.g,out_color.b, index);
   }
+
   outColor = color;
 }

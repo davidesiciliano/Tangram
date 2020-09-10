@@ -1,9 +1,9 @@
 var initialPosition = [
   { //piece 0
-    tx: -1.019658,
-    ty: 0.125,
+    tx: -1.159658,
+    ty: 0.12,
     tz: -0.10,
-    rx: 0.0,
+    rx: 90.0,
     ry: 90.0,
     rz: 0.0,
     s: 1.0

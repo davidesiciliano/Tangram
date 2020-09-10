@@ -53,7 +53,4 @@ async function init() {
   main();
 }
 
-window.onload = init;
-
-//TODO: spostare tutto in events
-
+window.onload = init

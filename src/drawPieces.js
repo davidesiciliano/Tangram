@@ -46,6 +46,7 @@ function drawPieces() {
 
       gl.uniform1f(locationsArray[ShadersType.pieces].selection, mouseClicked);
       gl.uniform1f(locationsArray[ShadersType.pieces].index, (((255 - i) >> 0) & 0xFF) / 0xFF);
+      gl.uniform3fv(locationsArray[ShadersType.pieces].selectedColor, i == selectedPieceIndex ? [0.2, 0.2, 0.2] : [0.0, 0.0, 0.0]);
 
       gl.bindVertexArray(piecesVaos[i]);
       gl.drawElements(gl.TRIANGLES, piecesIndexData[i].length, gl.UNSIGNED_SHORT, 0);

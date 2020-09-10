@@ -85,7 +85,7 @@ var specularShine = 120.0;
 var specularColor = [1.0, 1.0, 1.0, 1.0];
 
 //material colour
-let piecesMaterialColor = [
+let initialPiecesMaterialColor = [
   [0.0, 0.0, 1.0],
   [0.0, 1.0, 0.0],
   [1.0, 1.0, 0.0],
@@ -102,6 +102,26 @@ let piecesMaterialColor = [
   [0.0, 0.0, 0.0],
   [0.0, 0.0, 0.0]
 ];
+
+let surrenderPiecesMaterialColor = [
+    [0.0, 0.0, 1.0],
+    [0.0, 1.0, 0.0],
+    [1.0, 1.0, 0.0],
+    [1.0, 192.0 / 255, 203.0 / 255],
+    [1.0, 0.0, 0.0],
+    [128.0 / 255, 0.0, 128.0 / 255],
+    [1.0, 165.0 / 255, 0.0],
+    [1.0, 1.0, 1.0],
+    [0.0, 0.0, 1.0],
+    [0.0, 1.0, 0.0],
+    [1.0, 1.0, 0.0],
+    [1.0, 192.0 / 255, 203.0 / 255],
+    [1.0, 0.0, 0.0],
+    [128.0 / 255, 0.0, 128.0 / 255],
+    [1.0, 165.0 / 255, 0.0]
+];
+
+let piecesMaterialColor = new Array();
 
 // the light types are directionalLight, pointLight, spotLight, the fourth element is needed in order to have 4 elements
 // if light is active lightSwitch[n] = 1
