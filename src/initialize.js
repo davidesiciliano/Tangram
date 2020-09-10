@@ -56,21 +56,85 @@ async function loadModels() {
 function initPositions() {
   //region: creates world matrices for initial position of pieces
   //first big triangle
-  piecesWorldMatrixParams[0] = [-1.019658, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0];
+  piecesWorldMatrixParams[0] = [
+    initialPosition[0].tx,
+    initialPosition[0].ty,
+    initialPosition[0].tz,
+    initialPosition[0].rx,
+    initialPosition[0].ry,
+    initialPosition[0].rz,
+    initialPosition[0].s
+  ];
   //middle triangle
-  piecesWorldMatrixParams[1] = [1.43125, -1.346947, -0.10, 90.0, 90.0, 0.0, 1.0];
+  piecesWorldMatrixParams[1] = [
+    initialPosition[1].tx,
+    initialPosition[1].ty,
+    initialPosition[1].tz,
+    initialPosition[1].rx,
+    initialPosition[1].ry,
+    initialPosition[1].rz,
+    initialPosition[1].s
+  ];
   //first small triangle
-  piecesWorldMatrixParams[2] = [0.532533, 0.125, -0.10, 0.0, 90.0, 0.0, 1.0];
+  piecesWorldMatrixParams[2] = [
+    initialPosition[2].tx,
+    initialPosition[2].ty,
+    initialPosition[2].tz,
+    initialPosition[2].rx,
+    initialPosition[2].ry,
+    initialPosition[2].rz,
+    initialPosition[2].s
+  ];
   //trapezoid
-  piecesWorldMatrixParams[3] = [1.549651, 0.519417, -0.10, 0.0, 90.0, 0.0, 1.0];
+  piecesWorldMatrixParams[3] = [
+    initialPosition[3].tx,
+    initialPosition[3].ty,
+    initialPosition[3].tz,
+    initialPosition[3].rx,
+    initialPosition[3].ry,
+    initialPosition[3].rz,
+    initialPosition[3].s
+  ];
   //square
-  piecesWorldMatrixParams[4] = [-0.016485, -0.875, -0.10, 0.0, 90.0, 0.0, 1.0];
+  piecesWorldMatrixParams[4] = [
+    initialPosition[4].tx,
+    initialPosition[4].ty,
+    initialPosition[4].tz,
+    initialPosition[4].rx,
+    initialPosition[4].ry,
+    initialPosition[4].rz,
+    initialPosition[4].s
+  ];
   //second small triangle
-  piecesWorldMatrixParams[5] = [-1.019658, -1.498514, -0.10, 180.0, 90.0, 0.0, 1.0];
+  piecesWorldMatrixParams[5] = [
+    initialPosition[5].tx,
+    initialPosition[5].ty,
+    initialPosition[5].tz,
+    initialPosition[5].rx,
+    initialPosition[5].ry,
+    initialPosition[5].rz,
+    initialPosition[5].s
+  ];
   //second big triangle
-  piecesWorldMatrixParams[6] = [-0.019658, 1.216299, -0.10, 180.0, 90.0, 0.0, 1.0];
+  piecesWorldMatrixParams[6] = [
+    initialPosition[6].tx,
+    initialPosition[6].ty,
+    initialPosition[6].tz,
+    initialPosition[6].rx,
+    initialPosition[6].ry,
+    initialPosition[6].rz,
+    initialPosition[6].s
+  ];
   //tray
-  piecesWorldMatrixParams[7] = [0.0, 0.0, -0.09, 0.0, 90.0, 0.0, 1.0]
+  piecesWorldMatrixParams[7] = [
+    initialPosition[7].tx,
+    initialPosition[7].ty,
+    initialPosition[7].tz,
+    initialPosition[7].rx,
+    initialPosition[7].ry,
+    initialPosition[7].rz,
+    initialPosition[7].s
+  ];
 
   for (i = 0; i < 8; i++) {
     piecesWorldMatrixParams[i][0] -= 4;
@@ -104,7 +168,6 @@ function createParamsFromMatrix(matrix) {
     var params = Array;
     
     translation = [matrix[3], matrix[7], matrix[11]];
-    //console.log(translation)
     rotation = extractAnglesFromWorldMatrix(matrix);
     params = [translation[0], translation[1], translation[2], -rotation[2], rotation[0], -rotation[1], 1.0];
     return params;

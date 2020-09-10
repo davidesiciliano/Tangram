@@ -81,12 +81,24 @@ function checkTranslations() {
 }
 
 function checkRotations() {
-  let bigTriangleSolution0 = [(0.0 + selectedTarget.rotation[0][0]) % 360, (0.0 + selectedTarget.rotation[0][1]) % 360];
-  let bigTriangleSolution6 = [(180.0 + selectedTarget.rotation[6][1]) % 360, (180.0 + selectedTarget.rotation[6][0]) % 360];
+  let bigTriangleSolution0 = [
+    (initialPosition[0].rx + selectedTarget.rotation[0][0]) % 360,
+    (initialPosition[0].rx + selectedTarget.rotation[0][1]) % 360
+  ];
+  let bigTriangleSolution6 = [
+    (initialPosition[6].rx + selectedTarget.rotation[6][1]) % 360,
+    (initialPosition[6].rx + selectedTarget.rotation[6][0]) % 360
+  ];
   let bigTriangleIndex = -1;
 
-  let smallTriangleSolution2 = [(0.0 + selectedTarget.rotation[2][0]) % 360, (0.0 + selectedTarget.rotation[2][1]) % 360];
-  let smallTriangleSolution5 = [(180.0 + selectedTarget.rotation[5][1]) % 360, (180.0 + selectedTarget.rotation[5][0]) % 360];
+  let smallTriangleSolution2 = [
+    (initialPosition[2].rx + selectedTarget.rotation[2][0]) % 360,
+    (initialPosition[2].rx + selectedTarget.rotation[2][1]) % 360
+  ];
+  let smallTriangleSolution5 = [
+    (initialPosition[5].rx + selectedTarget.rotation[5][1]) % 360,
+    (initialPosition[5].rx + selectedTarget.rotation[5][0]) % 360
+  ];
   var smallTriangleIndex = -1;
   for (i = 0; i < piecesNumber; i++) {
     switch (i) {
