@@ -154,6 +154,34 @@ var didPressKey = function (e) {
     keys[e.keyCode] = true;
     switch (e.keyCode) {
 
+      case 49: // piece0
+        selectedPieceIndex = 0;
+        break;
+
+      case 50: // piece1
+        selectedPieceIndex = 1;
+        break;
+
+      case 51: // piece2
+        selectedPieceIndex = 2;
+        break;
+
+      case 52: // piece3
+        selectedPieceIndex = 3;
+        break;
+
+      case 53: // piece4
+        selectedPieceIndex = 4;
+        break;
+
+      case 54: // piece5
+        selectedPieceIndex = 5;
+        break;
+
+      case 55: // piece6
+        selectedPieceIndex = 6;
+        break;
+
       case 37: 	// Left arrow
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
           piecesWorldMatrixParams[selectedPieceIndex][0] -= 0.025;
@@ -173,18 +201,18 @@ var didPressKey = function (e) {
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
           piecesWorldMatrixParams[selectedPieceIndex][1] -= 0.025;
         break;
-//
-      case 90: //Z
+
+      case 90: // Z
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
           piecesWorldMatrixParams[selectedPieceIndex][3] -= 45.0;
         break;
 
-      case 88: //X
+      case 88: // X
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
           piecesWorldMatrixParams[selectedPieceIndex][3] += 45.0;
         break;
 
-      case 32: //space
+      case 32: // Space
         if (selectedPieceIndex >= 0 && selectedPieceIndex < pieces.length)
           if (selectedPieceIndex !== 3) {
             piecesWorldMatrixParams[selectedPieceIndex][3] += 180.0;
@@ -193,7 +221,6 @@ var didPressKey = function (e) {
           }
         break;
     }
-
     keys[e.keyCode] = false;
   }
 }
