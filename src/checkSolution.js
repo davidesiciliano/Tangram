@@ -148,9 +148,13 @@ function checkRotations() {
         return false;
 
       case 3: //trapezoid
-        console.log(piecesWorldMatrixParams[i][4])
-        let xRotationTrap = piecesWorldMatrixParams[i][3] % 180;
-        if (xRotationTrap !== (solutionParams[3][3])%180) {
+        let xRotationTrap;
+        if (selectedTarget.name === "Man on horse") {
+          xRotationTrap = (piecesWorldMatrixParams[i][3] + 90.0) % 180;
+        } else {
+          xRotationTrap = piecesWorldMatrixParams[i][3] % 180;
+        }
+        if (xRotationTrap !== (solutionParams[3][3]) % 180) {
           return false;
         }
         if ((piecesWorldMatrixParams[i][4] <= 180) !== !selectedTarget.mirror) {
