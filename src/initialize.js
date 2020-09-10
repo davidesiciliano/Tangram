@@ -157,7 +157,7 @@ function initPositions() {
       selectedTarget.rotation[i - 8][0],
       1.0];
     if (selectedTarget.mirror && i === 11) {
-      piecesWorldMatrixParams[i][4] *= -1;
+      piecesWorldMatrixParams[i][3] += 180;
     }
   }
 

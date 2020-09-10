@@ -218,6 +218,7 @@ var didPressKey = function (e) {
             piecesWorldMatrixParams[selectedPieceIndex][3] += 180.0;
           } else {
             piecesWorldMatrixParams[selectedPieceIndex][4] = -piecesWorldMatrixParams[selectedPieceIndex][4];
+              console.log(piecesWorldMatrixParams[selectedPieceIndex])
           }
         break;
     }
