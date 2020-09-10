@@ -5,8 +5,24 @@
   selectShape.onchange = function () {
     idSelectedTarget = document.getElementById("selectShape").value;
     selectedTarget = targets[idSelectedTarget];
+    if (selectedTarget.name === "Camel") {
+      piecesNormalData[11] = [
+        0.0, 0.0, -1.0,
+        0.0, 0.0, -1.0,
+        0.0, 0.0, -1.0,
+        0.0, 0.0, -1.0
+      ]
+    } else {
+      piecesNormalData[11] = [
+        0.0, 0.0, 1.0,
+        0.0, 0.0, 1.0,
+        0.0, 0.0, 1.0,
+        0.0, 0.0, 1.0
+      ]
+    }
     userHasSurrendered = false;
     initPositions();
+    drawPieces();
   }
   for (var i = 0; i < targets.length; i++) {
     var optionToInsert = document.createElement("option");
@@ -218,7 +234,6 @@ var didPressKey = function (e) {
             piecesWorldMatrixParams[selectedPieceIndex][3] += 180.0;
           } else {
             piecesWorldMatrixParams[selectedPieceIndex][4] = -piecesWorldMatrixParams[selectedPieceIndex][4];
-              console.log(piecesWorldMatrixParams[selectedPieceIndex])
           }
         break;
     }
