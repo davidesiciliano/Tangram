@@ -49,9 +49,6 @@ vec4 specularPhong(vec3 lightDir, vec4 lightCol, vec3 normalVec, vec3 eyedirVec)
 }
 
 void main() {
-
-
-
   vec3 nNormal = normalize(fsNormal);
   vec3 nEyeDirection = normalize ((0.0, 0.0, 0.0) - fsPosition);
 

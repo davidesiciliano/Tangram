@@ -15,6 +15,9 @@ function drawPieces() {
 
       let normalMatrix = utils.invertMatrix(utils.transposeMatrix(worldViewMatrix));
 
+      let pieceIndex = i < piecesNumber ? (((255 - i) >> 0) & 0xFF) / 0xFF : (((255 - piecesNumber - 1) >> 0) & 0xFF) / 0xFF;
+      let pieceSelectedColor = i === selectedPieceIndex ? [0.2, 0.2, 0.2] : [0.0, 0.0, 0.0];
+
       gl.uniformMatrix4fv(locationsArray[ShadersType.pieces].matrixLocation, gl.FALSE, utils.transposeMatrix(projectionMatrix));
       gl.uniformMatrix4fv(locationsArray[ShadersType.pieces].normalMatrixPositionHandle, gl.FALSE, utils.transposeMatrix(normalMatrix));
       gl.uniformMatrix4fv(locationsArray[ShadersType.pieces].vertexMatrixPositionHandle, gl.FALSE, utils.transposeMatrix(worldViewMatrix));
@@ -45,8 +48,8 @@ function drawPieces() {
       gl.uniform1f(locationsArray[ShadersType.pieces].spotLightDecay, spotLightDecay);
 
       gl.uniform1f(locationsArray[ShadersType.pieces].selection, mouseClicked);
-      gl.uniform1f(locationsArray[ShadersType.pieces].index, (((255 - i) >> 0) & 0xFF) / 0xFF);
-      gl.uniform3fv(locationsArray[ShadersType.pieces].selectedColor, i == selectedPieceIndex ? [0.2, 0.2, 0.2] : [0.0, 0.0, 0.0]);
+      gl.uniform1f(locationsArray[ShadersType.pieces].index, pieceIndex);
+      gl.uniform3fv(locationsArray[ShadersType.pieces].selectedColor, pieceSelectedColor);
 
       gl.bindVertexArray(piecesVaos[i]);
       gl.drawElements(gl.TRIANGLES, piecesIndexData[i].length, gl.UNSIGNED_SHORT, 0);

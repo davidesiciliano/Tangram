@@ -254,9 +254,9 @@ var didMouseDown = function (e) {
   pixel = new Uint8Array(4); // A single RGBA value
   gl.readPixels(mouse.x, mouse.y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
 
-  if (pixel[3] > 255 - 7) {
+  if (pixel[3] > 255 - piecesNumber) {
     selectedPieceIndex = 255 - pixel[3];
-     piecesWorldMatrixParams[selectedPieceIndex][2] = -0.093;
+    piecesWorldMatrixParams[selectedPieceIndex][2] = -0.093;
     isMovingPiece = true;
   } else {
     selectedPieceIndex = -1;

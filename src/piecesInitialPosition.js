@@ -28,7 +28,7 @@ var initialPosition = [
   },
   { //piece 3
     tx: 1.549651,
-    ty: 0.519417,
+    ty: 0.559417,
     tz: -0.10,
     rx: 0.0,
     ry: 90.0,
@@ -63,9 +63,9 @@ var initialPosition = [
     s: 1.0
   },
   { //tray
-    tx: 0.0,
+    tx: -0.05,
     ty: 0.0,
-    tz: -0.09,
+    tz: -0.27,
     rx: 0.0,
     ry: 90.0,
     rz: 0.0,
