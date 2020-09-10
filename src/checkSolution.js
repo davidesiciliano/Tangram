@@ -61,8 +61,7 @@ function checkSolution() {
     }
   }
 
-  //return checkTranslations() && checkRotations();
-  return checkRotations();
+  return checkTranslations() && checkRotations();
 }
 
 function checkTranslations() {
@@ -82,60 +81,75 @@ function checkTranslations() {
 }
 
 function checkRotations() {
-  let smallTriangleSolution2 = [225.0 , 180.0];
-  let smallTriangleSolution5 = [315.0 , 270.0];
+  let bigTriangleSolution0 = [(0.0 + selectedTarget.rotation[0][0]) % 360, (0.0 + selectedTarget.rotation[0][1]) % 360];
+  let bigTriangleSolution6 = [(180.0 + selectedTarget.rotation[6][1]) % 360, (180.0 + selectedTarget.rotation[6][0]) % 360];
+  let bigTriangleIndex = -1;
+
+  let smallTriangleSolution2 = [(0.0 + selectedTarget.rotation[2][0]) % 360, (0.0 + selectedTarget.rotation[2][1]) % 360];
+  let smallTriangleSolution5 = [(180.0 + selectedTarget.rotation[5][1]) % 360, (180.0 + selectedTarget.rotation[5][0]) % 360];
   var smallTriangleIndex = -1;
   for (i = 0; i < piecesNumber; i++) {
-    if (i === 2 || i === 5) {
-      switch (i) {
-        case 0: //big triangles
-        case 6:
-          //TODO non controllare se solo uguali all'altro, ma se sono uguali alla rotazione che sarebbe necessaria per farli diventare uguali all'altro
-          if (piecesWorldMatrixParams[i][3] !== solutionParams[0][3] && piecesWorldMatrixParams[i][3] !== solutionParams[6][3]) {
-            console.log(i)
-            console.log(piecesWorldMatrixParams[i])
-            console.log(solutionParams[i])
-            return false;
-          }
+    switch (i) {
+      case 0: //big triangle
+        let xRotationBig0 = piecesWorldMatrixParams[i][3] % 360;
+        if (xRotationBig0 === bigTriangleSolution0[0]) {
+          bigTriangleIndex = 1;
           break;
-
-        case 1: //middle triangle
-          let xRotation = piecesWorldMatrixParams[i][3] % 360;
-          let yRotation = piecesWorldMatrixParams[i][4] % 360;
-          if (xRotation !== solutionParams[1][3] || yRotation !== solutionParams[1][4])
-            return false
+        }
+        if (xRotationBig0 === bigTriangleSolution0[1]) {
+          bigTriangleIndex = 0;
           break;
+        }
+        return false;
 
-        case 2: //small triangles
-          let xRotationSmall2 = piecesWorldMatrixParams[i][3] % 360;
-          console.log("pezzo2 " + xRotationSmall2)
-          if (xRotationSmall2 === smallTriangleSolution2[0]) {
-            smallTriangleIndex = 1;
-            break;
-          }
-          if (xRotationSmall2 === smallTriangleSolution2[1]) {
-            smallTriangleIndex = 0;
-            break;
-          }
+      case 6: //big triangle
+        let xRotationBig6 = piecesWorldMatrixParams[i][3] % 360;
+        if (xRotationBig6 === bigTriangleSolution6[bigTriangleIndex]) {
+          break;
+        }
+        return false;
+
+      case 1: //middle triangle
+        let xRotation = piecesWorldMatrixParams[i][3] % 360;
+        let yRotation = piecesWorldMatrixParams[i][4] % 360;
+        if (xRotation !== solutionParams[1][3] || yRotation !== solutionParams[1][4])
+          return false
+        break;
+
+      case 2: //small triangle
+        let xRotationSmall2 = piecesWorldMatrixParams[i][3] % 360;
+        if (xRotationSmall2 === smallTriangleSolution2[0]) {
+          smallTriangleIndex = 1;
+          break;
+        }
+        if (xRotationSmall2 === smallTriangleSolution2[1]) {
+          smallTriangleIndex = 0;
+          break;
+        }
+        return false;
+
+      case 5: //small triangle
+        let xRotationSmall5 = piecesWorldMatrixParams[i][3] % 360;
+        if (xRotationSmall5 === smallTriangleSolution5[smallTriangleIndex]) {
+          break;
+        }
+        return false;
+
+      case 3: //trapezoid
+        console.log(piecesWorldMatrixParams[i][4])
+        let xRotationTrap = piecesWorldMatrixParams[i][3] % 180;
+        if (xRotationTrap !== (solutionParams[3][3])%180) {
           return false;
-
-        case 5:
-          let xRotationSmall5 = piecesWorldMatrixParams[i][3] % 360;
-          console.log("pezzo5 " + xRotationSmall5)
-          if (xRotationSmall5 === smallTriangleSolution5[smallTriangleIndex]) {
-            break;
-          }
-          return false;
-
-        case 3: //trapezoid
-          //TODO
+        }
+        if ((piecesWorldMatrixParams[i][4] <= 180) !== !selectedTarget.mirror) {
           break;
+        }
+        return false;
 
-        case 4: //square
-          if (piecesWorldMatrixParams[i][3] % 2 !== solutionParams[4][3] % 2)
-            return false
-          break;
-      }
+      case 4: //square
+        if (piecesWorldMatrixParams[i][3] % 2 !== solutionParams[4][3] % 2)
+          return false
+        break;
     }
   }
   return true;
